@@ -33,7 +33,7 @@
       defer></script>
     <script src="script.js" defer></script>
   </head>
-  <body class="bg-gray-50 flex flex-col min-h-screen">
+  <body class="bg-slate-900 flex flex-col min-h-screen">
     <header>
       <!-- TW elements in the navbar to make it pop -->
       <nav
@@ -46,11 +46,11 @@
           </div>
           <ul class="flex list-style-none mr-auto pl-4">
             <li class="px-2">
-              <a href="index.html" class="text-blue-500">Feed</a>
+              <a href="index.html" class="text-blue-500">Discover</a>
             </li>
             <li class="px-2">
               <a href="discover.html" class="text-gray-500 hover:text-blue-500"
-                >Discover</a
+                >Feed</a
               >
             </li>
             <li class="px-2">
@@ -61,8 +61,9 @@
             <li class="px-2">
               <a
                 href="orbit-stream-wall.html"
-                class="text-gray-500 hover:text-bue-500"> Orbit Stream Wall</a>
-            
+                class="text-gray-500 hover:text-bue-500">
+                Orbit Stream Wall</a
+              >
             </li>
           </ul>
         </div>
@@ -132,16 +133,31 @@
               Private
             </label>
           </div>
-          <button
-            type="submit"
-            class="inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-            Publish Moment
-          </button>
         </div>
+        <button
+          type="submit"
+          class="inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+          Log in
+        </button>
+        <button
+          type="submit"
+          class="inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+          Forgot password?
+        </button>
+        <button
+          type="submit"
+          class="inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+          create new account
+        </button>
       </form>
     </main>
     <output id="feedback" class="block mt-4 text-center font-bold"></output>
+
     <footer class="big-white p-6 text-center border-t">
+      <div
+        class="flex flex-row justify-around gap-6 mt-3 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+        NOVUS
+      </div>
       <p>@ 2026 Pearla Mutombo | Authentic Social Tech | Novus</p>
     </footer>
   </body>
