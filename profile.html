@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovusNet | Web Storage</title>
+ <!-- Tailwind and TW elements script and CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          fontFamily: {
+            sans: ["Roboto", "sans-serif"],
+            body: ["Roboto", "sans-serif"],
+            mono: ["ui-monospace", "monospace"],
+          },
+        },
+        corePlugins: {
+          preflight: false,
+        },
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
+      defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+    <header>
+      <!-- TW elements in the navbar to make it pop -->
+      <nav
+        class="flex-no-wrap relative flex w-full items-center justify-between bg-white py-4 shadow-md lg:flex-wrap lg:justify-start">
+        <div class="flex w-full flex-wrap items-center justify-between px-6">
+          <div class="flex items-center">
+            <a class="text-xl font-bold text-blue-600" href="index.html"
+              >Novus</a
+            >
+          </div>
+          <ul class="flex list-style-none mr-auto pl-4">
+            <li class="px-2">
+              <a href="index.html" class="text-blue-500">Feed</a>
+            </li>
+            <li class="px-2">
+              <a href="discover.html" class="text-gray-500 hover:text-blue-500"
+                >Discover</a
+              >
+            </li>
+            <li class="px-2">
+              <a href="profile.html" class="text-gray-500 hover:text-bue-500"
+                >Profile</a
+              >
+            </li>
+            <li class="px-2">
+              <a
+                href="orbit-stream-wall.html"
+                class="text-gray-500 hover:text-bue-500"> Orbit Stream Wall</a>
+            
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto p-6 max-w-lg text-center">
+        <form>
+            <div class="bg-white p-8 rounded-lg shadow-xl">
+                <div id="profile-card">
+                    <!-- Content from User Object --> 
+                     <h2 id="display-name" class="text-3xl font-bold text-gray-800"></h2> 
+                     <p id="display-role" class="text-blue-500 font-semibold"></p>
+                     <hr class="my-4">
+                     <p id="display-bio" class="italic text-gray-600"></p>                  
+                </div>
+                <button onclick="resetProfile()" class="mt-6 text-sm text-red-500 underline">Reset Local Data</button>
+
+            </div>
+        </form>
+
+    </main>
+    <footer class="big-white p-6 text-center border-t">
+      <p>@ 2026 Pearla Mutombo | Authentic Social Tech | Novus</p>
+    </footer>
+  </body>
+</html>

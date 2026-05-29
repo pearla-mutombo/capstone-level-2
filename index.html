@@ -1,28 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovusNet | Moments</title>
+    <!-- Tailwind and TW elements script and CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          fontFamily: {
+            sans: ["Roboto", "sans-serif"],
+            body: ["Roboto", "sans-serif"],
+            mono: ["ui-monospace", "monospace"],
+          },
+        },
+        corePlugins: {
+          preflight: false,
+        },
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
+      defer></script>
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
     <header>
-        <nav>
-            <a></a>
-        </nav>
+      <!-- TW elements in the navbar to make it pop -->
+      <nav
+        class="flex-no-wrap relative flex w-full items-center justify-between bg-white py-4 shadow-md lg:flex-wrap lg:justify-start">
+        <div class="flex w-full flex-wrap items-center justify-between px-6">
+          <div class="flex items-center">
+            <a class="text-xl font-bold text-blue-600" href="index.html"
+              >Novus</a
+            >
+          </div>
+          <ul class="flex list-style-none mr-auto pl-4">
+            <li class="px-2">
+              <a href="index.html" class="text-blue-500">Feed</a>
+            </li>
+            <li class="px-2">
+              <a href="discover.html" class="text-gray-500 hover:text-blue-500"
+                >Discover</a
+              >
+            </li>
+            <li class="px-2">
+              <a href="profile.html" class="text-gray-500 hover:text-bue-500"
+                >Profile</a
+              >
+            </li>
+            <li class="px-2">
+              <a
+                href="orbit-stream-wall.html"
+                class="text-gray-500 hover:text-bue-500"> Orbit Stream Wall</a>
+            
+            </li>
+          </ul>
+        </div>
+      </nav>
     </header>
-    <main>
-        <form>
-            <div>
-                <label>
+    <main
+      class="container mx-auto p-6 max-w-lg bg-white mt-10 rounded-lg shadow-xl">
+      <h2 class="text-2xl font-bold mb-4">Post a Moment</h2>
 
-                </label>
-            </div>
-        </form>
+      <form id="discovery-form" class="space-y-4">
+        <fieldset class="border p-4 rounded">
+          <legend class="font-bold px-2">Community Content</legend>
+          <div>
+            <label for="username" class="block font-meidum"
+              >Log into Novus</label
+            >
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              class="w-full border rounded p-2" />
+          </div>
+          <div>
+            <label
+              for="novus-select"
+              class="block font-medium mt-3 text-gray-700"
+              >Select Domain</label
+            >
+            <!-- place for a Dropdown -->
+            <select
+              id="novus-select"
+              name="novus"
+              class="w-full border rounded p-2 bg-white text-gray-900 focus:ring-blue-500">
+              <option value="computing">Advanced Computing</option>
+              <option value="law">Global Jurisprudence</option>
+              <option value="dance">Kinetic Artistry</option>
+            </select>
+          </div>
+        </fieldset>
+        <!-- place for radio buttons -->
+        <div class="flex gap-4">
+          <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
+            <input
+              class="relative float-left -ms-[1.5rem] me-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-secondary-500 before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60 focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] rtl:float-right dark:border-neutral-400 dark:checked:border-primary"
+              type="radio"
+              name="flexRadioDefault"
+              id="visibility"
+              value="public"
+              checked />
+            <label
+              class="mt-px inline-block ps-[0.15rem] hover:cursor-pointer"
+              for="visibility">
+              Public
+            </label>
+          </div>
+          <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
+            <input
+              class="relative float-left -ms-[1.5rem] me-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-secondary-500 before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60 focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] rtl:float-right dark:border-neutral-400 dark:checked:border-primary"
+              type="radio"
+              name="flexRadioDefault"
+              id="visibility"
+              value="private" />
+            <label
+              class="mt-px inline-block ps-[0.15rem] hover:cursor-pointer"
+              for="visibility">
+              Private
+            </label>
+          </div>
+          <button
+            type="submit"
+            class="inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+            Publish Moment
+          </button>
+        </div>
+      </form>
     </main>
-    <footer></footer>
-    
-</body>
+    <output id="feedback" class="block mt-4 text-center font-bold"></output>
+    <footer class="big-white p-6 text-center border-t">
+      <p>@ 2026 Pearla Mutombo | Authentic Social Tech | Novus</p>
+    </footer>
+  </body>
 </html>
