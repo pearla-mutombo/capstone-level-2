@@ -249,6 +249,7 @@ async function handleSubmit (event) {
     const
     const
     const 
+    const
 
   } catch (error) {
     console.error("Error processing API data:", error);
@@ -333,6 +334,7 @@ function initPage4OrbitWall (activeUser) {
   feedContainer.innerHTML = html;
   
   };
+
 // Locate Publishing button within submission context elements
   const publishBtn = textInput.parentElement.querySelector("button");
   
