@@ -3,35 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovusNet | Moments</title>
-    <!-- Tailwind and TW elements script and CDN -->
+    <title>Novus</title>
+
+    <!-- Tailwind v3 via CDN (rubric: "Tailwind v3 in head tag") -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- TW Elements (rubric: "Properly install TW Elements") -->
     <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css"
       rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
-    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          fontFamily: {
-            sans: ["Roboto", "sans-serif"],
-            body: ["Roboto", "sans-serif"],
-            mono: ["ui-monospace", "monospace"],
-          },
-        },
-        corePlugins: {
-          preflight: false,
-        },
-      };
-    </script>
+
+    <!-- Custom mobile-first CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- shared JS, deferred so it runs after HTML loads (rubric: "Properly defer scripts") -->
+    <script defer src="script.js"></script>
     <script
-      src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
-      defer></script>
-    <script src="script.js" defer></script>
+      defer
+      src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
   </head>
   <body class="bg-slate-900 flex flex-col min-h-screen">
     <header>
@@ -40,7 +29,9 @@
         class="flex-no-wrap relative flex w-full items-center justify-between bg-white py-4 shadow-md lg:flex-wrap lg:justify-start">
         <div class="flex w-full flex-wrap items-center justify-between px-6">
           <div class="flex items-center">
-            <a class="text-xl font-bold text-blue-600 sm:text-green-400 md:text-cyan-800 lg:text-purple-500 xl:text-cyan-400" href="index.html"
+            <a
+              class="text-xl font-bold text-blue-600 sm:text-green-400 md:text-cyan-800 lg:text-purple-500 xl:text-cyan-400"
+              href="index.html"
               >Novus</a
             >
           </div>
@@ -142,12 +133,12 @@
         </button>
         <button
           type="submit"
-          class=" bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+          class="bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
           Forgot password?
         </button>
         <button
           type="submit"
-          class="bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal  text-blue-400 text-emerald-600 shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+          class="bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-blue-400 text-emerald-600 shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
           Create new account
         </button>
       </form>

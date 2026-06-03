@@ -2,36 +2,30 @@
 const domain_Map = {
   computing: "Advanced Computing",
   news: "World News",
-  Arts: "Artisty",
+  Arts: "Arts",
   Science: "Science"
 };
 
-If (!localStorage.getItem("novus_posts")) {
+if (!localStorage.getItem("novus_posts")) {
   localStorage.setItem("novus_posts",JSON.stringify([
   {
-  username: "Pearla",
-  domain: "Advanced Computing",
-  text: "Just finished setting up the dynamic UI script for the dashboard. The reusable componets architecture is working perfectly!",
-  image:"",
-  timestamp: "2 hours ago",
-  visibility: "public"
-  };
+    username: "Pearla",
+    domain: "Advanced Computing",
+    text: "Just finished setting up the dynamic UI script for the dashboard. The reusable componets architecture is working perfectly!",
+    image:"",
+    timestamp: "2 hours ago",
+    visibility: "public"
+  },
+
   {
-  username: "Sloan",
-  domain: "Global Jurisprudence",
-  text: "Analyzing recent international maritime treaties. Fascinating overlaps in territorial airspace laws.",
-  image: "",
-  timestamp: "5 hours ago",
-  visibility: "public",
+    username: "Sloan",
+    domain: "Global Jurisprudence",
+    text: "Analyzing recent international maritime treaties. Fascinating overlaps in territorial airspace laws.",
+    image: "",
+    timestamp: "5 hours ago",
+    visibility: "public",
   }
-  {
-  username:"",
-  domain:"",
-  text: "",
-  image: "",
-  timestamp: "",
-  visibility: "",
-  }
+
   ]));
 }
 
@@ -39,29 +33,31 @@ If (!localStorage.getItem("novus_posts")) {
 
 document.addEventListener ("DOMContentLoaded", () => {
   const currentPath = window.location.pathname;
-  const pageName = currentPath.substring(currentPath.lastIndexOf("/") + 1) || "index.html";
+  const pageName = currentPath.substring(currentPath.lastIndexOf("/") + 1) || "index-discover.html";
 
   //Check if a valid session token exists
   const activeUser = JSON.parse(localStorage.getItem("novus_session"));
 
   //Page safeguard (force redirect to portal if accessing raw unauthenticated)
-  const privatePages = ["discover.html", "profile.html", "orbit-stream-wall.html"];
+  const privatePages = ["feed.html", "profile.html", "orbit-stream-wall.html"];
   if (privatePages.includes(pageName) && !activeUser) {
-    alert("Access Denied: Please log in to view this node.");
-    window.location.href = "index.html";
-  } return ;
+    alert("Access Denied: You need an account to see this. Please log in first.");
+    window.location.href = "index-discover.html"; // redirect you back to homepage
+    return;
+  } 
   
-  // reidect to dashboard if logged-in user visits the landing portal
-  if (pageName === "index.html" && activeUser) {
-    window.location.href = "discover.html";
-  } return;
+  // redirect to dashboard if logged-in user visits the landing portal
+  if (pageName === "index-discover.html" && activeUser) {
+    window.location.href = "feed.html"; // redirects you back to the feed page
+    return;
+  } 
 
   //specific page initializers or initialization
   switch (pageName) {
-    case "index.html":
+    case "index-discover.html":
       initPage1Portal();
       break;
-    case "discover.html":
+    case "feed.html":
         initPage2Feed();
         break;
     case "profile.html":
@@ -73,7 +69,7 @@ document.addEventListener ("DOMContentLoaded", () => {
   }
 });
 
-// 3. Page 1 - index.html (portal engine)
+// 3. Page 1 - index-discover.html (portal engine)
 function initPage1Portal () {
   const form = document.getElementById("discovery-form");
   const feedback = document.getElementById("feedback");
@@ -82,9 +78,13 @@ function initPage1Portal () {
   const showError = (message) => { feedback.className = "block mt-4 text-center font-bold text-red-500"; feedback.textContent = message;};
   const showOkay = (message) => { feedback.className = "block mt-4 text-center font-bold text-emerald-500"; feedback.textContent = message;};
 
-// data validation
-const validatePasswordComplexity = (string)=> {
-  return string.length >= 8 && /\d/.test(str) && /[!@#$%^&*(),.?":{}|<>]/.test(str);
+// validating the data
+const validatePasswordComplexity = (password)=> {
+  return (
+    password.length >= 8 &&
+    /\d/.test(password) &&
+    /[!@#$%^&*(),.?":{}|<>]/.test(password) // these are what characters can be used with your password
+  );
 };
 
 form.addEventListener("submit", (event) => event.preventDefault()); //prevents from reloading
@@ -99,21 +99,22 @@ buttons.forEach (button => {
  if (text === "log in") {
   button.addEventListener ("click", () => {
     const user = document.getElementById("username").value.trim();
-    // show successful backend authentication exchange
+    // show successful authentication 
     const targetSession = {
       username: user,
-      role: "Founding Memeber",
+      role: "Founding Member",
       bio: `Novus network anchor point node assigned to ${user}. Dedicated explorer across tactical domains.`,
       domainPreference: document.getElementById("novus-select").value
     };
     localStorage.setItem("novus_session", JSON.stringify(targetSession));
     showOkay("Idenity Verified! Entering Orbit Stream...");
-    setTimeout() => window.location.href = "discover.html", 1200);
-  });
+    setTimeout(() => {
+      window.location.href = "feed.html";
+    }, 1200);
  }
 
- // action B: sign-up process (with requisite complexity check)
- if (text === "create new account") {
+ // action B: sign-up process ( sigining up while making sure your username and password meets all safety rules)
+  if (text === "create new account") {
   button.addEventListener ("click", () =>{
     const user = document.getElementById("username").value.trim();
     if (!user) return showError("Account name field cannot remain blank. please enter a valid username.");
@@ -122,25 +123,27 @@ buttons.forEach (button => {
     const promptPassword = prompt ("Assgin an access password for your secure profile token:");
     if (!promptPassword) return;
     
-    if(!validatePasswordComplexity(promtPassword)) {
+    if(!validatePasswordComplexity(promptPassword)) {
       showError ("Securing error: Password must be at least 8 characters. containing 1 number, and special symbol.");
       return;
     }
     
-    showOkay(`Account node configured for ${user}! Click "Log In" to synchronize details.`);
+    showOkay(`Account connection configured for ${user}! Click "Log In" to synchronize details.`);
   });
  }
 
  // action C: reset Password Forwarding
- if (text === "forgot password?") {
-  button.addEventListener("click", () => {
-    const user = document.getElementById("username").value.trim();
-    if(!user) return showError("Specify target username anchor first.");
-    showOkay(`Security validation token dispatched over sytem to user link:[${user}]`);
-  });
- }
+    if (text === "forgot password?") {
+      button.addEventListener("click", () => {
+        const user = document.getElementById("username").value.trim();
+        if(!user) return showError("Specify target username anchor first.");
+      showOkay(`Security validation token dispatched over sytem to user link:[${user}]`);
+    });
+  } 
+ });
+}
 
- // 4. Page 2: discover.html (Exploration Discover Feed)
+ // 4. Page 2: feed.html (Exploration Discover Feed)
 
  function initPage2Feed() {
   const feedSection = document.querySelector("main section");
@@ -201,7 +204,7 @@ async function handleSubmit (event) {
   ]);
 
   // safely parse all incoming json result streams simultaneously
-  const [] = await Promise.all ([
+  const [scienceData, worldnewsData, artsData, nasaData, programmingjokeData, artworkData ] = await Promise.all ([
     response1.json(),
     response2.json(),
     response3.json(),
@@ -213,19 +216,39 @@ async function handleSubmit (event) {
   // picks random index based on the array length (Note: i used a math.floor
   // because its a function that rounds a number down to the nearest whole integers;
   // it drops the decimal entirely, leaving us with the perfect whole number in the apis url that i choose.)
-    const random[]Index = Math.floor(Math.random() * []Result.length);
-    const random[] = []Result[random[]Index];
+   
+    const ScienceResults = scienceData.results; // array of articles
+    const randomScienceIndex = Math.floor(Math.random() * ScienceResults.length);
+    const randomScience = scienceResults[randomScienceIndex];
 
-    const random[]Index = Math.floor(Math.random() * []Result.length);
-    const random[] = []Result[random[]Index];
+    const WorldNewsResults = worldnewsData.results; // array of articles
+    const randomWorldNewsIndex = Math.floor(Math.random() * WorldNewsResults.length);
+    const randomWorldNews = worldnewsResults[randomWorldNewsIndex];
+    
+    const ArtsResults = artsData.results // array of articles
+    const randomArtsIndex = Math.floor(Math.floor() * ArtsResults.length);
+    const randomArts = artsResults[randomArtsIndex];
 
-    const random[]Index = Math.floor(Math.random() * []Result.length);
-    const random[] = []Result[random[]Index];
+    const NasaResults = nasaData.results // array of articles
+    const randomNasaIndex = Math.floor(Math.floor() * NasaResults.length);
+    const randomNasa = nasaResults[randomNasaIndex];
+
+    const ProgrammingJokeResults = programmingjokeData.results // array of articles
+    const randomProgrammingJokeIndex = Math.floor(Math.floor() * ProgrammingJokeResults.length);
+    const randomProgrammingJoke = programmingjokeResults[randomProgrammingJokeIndex];
+
+    const ArtWorkResults = artworkData.results // array of articles
+    const randomArtWorkIndex = Math.floor(Math.floor() * ArtWorkResults.length);
+    const randomArtWork = artworkResults[randomArtWorkIndex];
+
+
     // 4. safely seperated variables from the randomized selections
     const
     const
     const
     const
+    const
+    const 
 
   } catch (error) {
     console.error("Error processing API data:", error);
@@ -252,7 +275,7 @@ function initPage3Profile(activeUser) {
   window.resetProfile = () => {
     if (confrim ("Are you sure you want to scrub session storage and disconnet active nodes?")) {
       localStorage.removeItem("novus_session");
-      window.location.href = "index.html";
+      window.location.href = "index-discover.html";
     }
   };
 
@@ -262,7 +285,10 @@ function initPage3Profile(activeUser) {
 function initPage4OrbitWall (activeUser) {
   //start by synchronizing internal layout names with logged-in user conxtext variables
   const displayNames = document.querySelectorAll("#display-name, #profile-name");
-  displayNames.forEach(el.textContent = activeUser.username);
+  displayNames.forEach((el) => {
+    el.textContent = activeUser.username;
+  });
+
   const roleEl = document.getElementById("display-role");
   if (roleEl) roleEl.textContent = activeUser.role;
 
@@ -282,36 +308,38 @@ function initPage4OrbitWall (activeUser) {
     const posts = JSON.parse(localStorage.getItem("novus_posts")) || [];
 
     // Sort array so freshly committed moments land at top of view space
-    feedContainer.innerHTML = posts.map(post => 
-      `
-      <div class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 space-y-3 transition hover:border-slate-700/50">
-        <div class="flex justify-between items-center text-xs">
+    let html = "";
+  for (let i = 0; i < posts.length; i++) {
+    const post = posts[i];
+    html += `
+      <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 space-y-3">
+        <header class="flex justify-between items-center text-xs">
           <span class="font-bold text-blue-400">${post.domain}</span>
           <div class="flex items-center gap-2 text-slate-500">
-            <span class="italic text-[10px] text-slate-400 font-sans">[by ${post.username}]</span>`
-    )
+            <span class="italic text-[10px]">[by ${post.username}]</span>
+            <span>${post.timestamp}</span>
+            <span>${post.visibility}</span>
+          </div>
+        </header>
+        <p class="text-slate-200">${post.text}</p>
+        ${post.image ? `<img src="${post.image}" class="max-h-60 w-full object-cover rounded-xl" alt="Stream attachment" />` : ""}
+        <footer class="flex gap-4 text-xs text-blue-400">
+          <button type="button" class="hover:underline">▲ Upvote</button>
+          <button type="button" class="hover:underline">💬 Discuss</button>
+        </footer>
+      </article>
+    `;
   }
-  ${post.timestamp}
-  ${post.visibility}
-  
-  ${post.text}
-  ${post.image ? <img src="${post.image}" class="max-h-60 w-full 
-  object-cover rounded-xl border border-slate-700/30" alt="Stream 
-  Attachments" onerror="this.style.display='none'"/> : ""}
-  
-  ▲ Upvote
-  💬 Discuss
-  
-  `).join("");
+  feedContainer.innerHTML = html;
   
   };
 // Locate Publishing button within submission context elements
-  const publishBtn = textInput.parentElement.querySelector("button")
-  ;if (publishBtn) {
-  publishBtn.addEventListener("click", () => {
+  const publishBtn = textInput.parentElement.querySelector("button");
+  
+  if (publishBtn) {publishBtn.addEventListener("click", () => {
   const content = textInput.value.trim();
-  if (!content) return alert("Write something to your feed stream matrix 
-  before publishing.");
+
+  if (!content) return alert("Write something to your feed stream matrix before publishing.");
   
   // Check registration visibility settings inside index form mapping elements
     const targetVisibility = "public";
@@ -340,8 +368,6 @@ function initPage4OrbitWall (activeUser) {
     // Initial draw execution looprenderOrbitPosts();
     }`
 
-
-////////////////////////////////////////////////////////////////////////////////
 // 1. objects and storage (Note: requirement)
 //using  a built-in object (localStorage) and a custom object
 
@@ -411,7 +437,7 @@ function CreateComponent(type, content, cssClass) {
     event.preventDefault();
 
     const nicheInput = document.getElementById("niche-input").value;
-    const feedback = document.getElementById("api-feeback");
+    const feedback = document.getElementById("feeback");
     if (!nicheInput || !feedback) return;
 
     const nicheVal = nicheInput.value;
