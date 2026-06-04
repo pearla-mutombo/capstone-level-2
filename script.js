@@ -95,60 +95,32 @@ document.addEventListener ("DOMContentLoaded", () => {
       break;
   }
 });
+
 //======================================================================
 // SECTION 1. Page 1: Portal (index-discover.html) 
 // (Note: This handles login, signup, and forgot password.
 // Each button has its own id in the HTML and its own click handler.)
 //=======================================================================
 
-funtcion initPage1Portal () {
+function initPage1Portal () {
   const form = document.getElementById("discovery-form");
   const feedback = document.getElementById("feedback");
-
-  // safety guard: stop if the form isn't on the current HTML page
+  
   if(!form) return;
 
-  // Reusable helper functions with parameters (rubric: Functions)
-
-  form.onsubmit = handleLoginSubmit;
-
-  function initPage1Portal(event) {
-    event.preventDefault();
-    
-    const form = event.target;
-
-    const data = {
-      username: form.elements.username.value,
-      password: form.elements.password.value
+  const showError = (message) => {
+    if(feedback) {
+    feedback.className = "block mt-4 text-center font-bold text-red-500"; 
+    feedback.innerText = message;
+    }
   };
-  
-   if(!username) {
-      showError("Please enter your username before logging in.");
-      return;
-    }
-   
-    if(!password) {
-      showError("Please enter your password before loggin in.");
-      return;
-    }
 
-  // Save to storage (rubric: Storage  - save)
-    localStorage.setItem("novus_session", JSON.stringify(targetSession));
-
+  const showOkay = (message) => {
+    if (feedback) {
+     feedback.className = "block mt-4 text-center font-bold text-emerald-500"; 
+     feedback.innerText = message;
   }
-  
-  // if(!form) return;
-
-  // Reusable helper functions with parameters (rubric: Functions)
-  // const showError = (message) => { 
-  //   feedback.className = "block mt-4 text-center font-bold text-red-500"; 
-  //   feedback.textContent = message;
-  // };
-
-  // const showOkay = (message) => {
-  //    feedback.className = "block mt-4 text-center font-bold text-emerald-500"; 
-  //    feedback.textContent = message;
-  //   };
+};
 
 // Reusable function with a parameter (rubric: Functions)
 // Called TWICE below - once for login, once for signup.
@@ -161,16 +133,18 @@ const validatePasswordComplexity = (password)=> {
 };
 
 // Prevent the form from reloading the page (rubric: Form handler)
-form.addEventListener("submit", (event) => event.preventDefault());
+form.addEventListener("submit",(event) =>{
+  event.preventDefault();
+})
 
  // Action A: LOG IN 
  const loginBtn = document.getElementById("loginBtn");
  if (loginBtn) {
   loginBtn.addEventListener ("click", () => {
     //Access form values via form.elements (rubric: Form)
-    const username = form.elements.username.value.trim(); "";
-    const domain = form.elements.domain.value;
-    const loginPassword = form.elemnts.password.value;
+    const username =  form.elements.username ? form.elements.username.value.trim(): "";
+    const domain = form.elements.domain.value ? form.elements.domain.value: "computing";
+    const loginPassword = form.elements.password ? form.elements.password.value : "";
 
     if(!username) {
       showError("Please enter your username before logging in.");
@@ -189,7 +163,7 @@ form.addEventListener("submit", (event) => event.preventDefault());
     // we drop the signup password into it.
     const isLoginPasswordValid = validatePasswordComplexity(loginPassword);
     if(!isLoginPasswordValid) {
-      showError("Password must be eight characters with a symbol.");
+      showError("Password must be 8+ characters with a number and a symbol.");
       return;
     }
 
@@ -198,9 +172,9 @@ form.addEventListener("submit", (event) => event.preventDefault());
     // (targetSession) inside a string box and locks it safely away inside the browser's
     // persistent memory vault (localStorage), ensurinf they stay logged in even if they refresh.
     const targetSession = {
-      username: user,
+      username: username,
       role: "Founding Member",
-      bio: `Novus network anchor point node assigned to ${username}. Dedicated explorer across tactical domains.`,
+      bio: `Novus network anchor point connection assigned to ${username}. Dedicated explorer across tactical domains.`,
       domainPreference: domain,
       lastLogin: new Date().toLocaleString()
     };
@@ -222,18 +196,22 @@ form.addEventListener("submit", (event) => event.preventDefault());
   const createBtn = document.getElementById("createBtn");
     if (createBtn) {
   createBtn.addEventListener ("click", () => {
-    const user = document.getElementById("username").value.trim();
+    const usernameEl = document.getElementById("username");
+    const username =  usernameEl ? usernameEl.value.trim() : "";
+
+
     if (!username) {
      showError("Account name field cannot remain blank. please enter a valid username.");
      return;
     }
 
-    const signupPassword = prompt("Assgin an access password for your secure profile token:");
+    const signupPassword = prompt("Assgin an access password for your secure profile stream:");
     if (!signupPassword) return;
 
     // Second use of validatePasswordComplexity (rubric: Functions - called two more times)
     const isSignupPasswordValid = validatePasswordComplexity(signupPassword);
-    if (isPasswordValid){
+
+    if (isSignupPasswordValid) {
       showOkay(`Account created for ${username}! Click "Log In" to synchronize details.`);
     } else {
       showError("Password must be 8+ characters with a number and a symbol.");
@@ -245,7 +223,7 @@ form.addEventListener("submit", (event) => event.preventDefault());
 const forgotBtn = document.getElementById("forgotBtn");
 if (forgotBtn) {
   forgotBtn.addEventListener("click", () => {
-    const username = form.elements.username.value.trim();
+    const username =  form.elements.username ? form.elements.username.value.trim(): "";
     if(!username) {
       showError("Specify a target username first.");
       return;
@@ -254,6 +232,7 @@ if (forgotBtn) {
   });
   }
 }
+
  
 //=====================================================================
 // SECTION 4 -  Page 2: Feed (feed.html)
@@ -360,70 +339,71 @@ async function handleApiSubmit(event) {
     // the arrays, ensuring that every time your page is loaded or submitted, a completely
     // dynamic set of titles updates on screen.
     const scienceResults = scienceData.results;
-    const randomScience = scienceResults.length > 0 ? scienceResults[Math.floor(Math.random() * scienceResults.length)];
+    const randomScience = scienceResults.length > 0 ? scienceResults[Math.floor(Math.random() * scienceResults.length)]: null;
 
     const worldResults = worldData.results;
-    const randomWorld= worldResults.length > 0 ? worldResults[Math.floor(Math.random() * worldResults.length)];
+    const randomWorld= worldResults.length > 0 ? worldResults[Math.floor(Math.random() * worldResults.length)]: null;
 
     const artsResults = artsData.results;
-    const randomArts= artsResults.length > 0 ? artsResults[Math.floor(Math.random() * artsResults.length)];
+    const randomArts= artsResults.length > 0 ? artsResults[Math.floor(Math.random() * artsResults.length)]: null;
 
     // NASA APOD returns a single object, not a list a picture of the day
-    const nasaPicture = nasaData;
+    const nasaPicture = nasaData || {};
     
     //JokeAPI single returns one joke at a time
-    const joke = jokeData;
+    const joke = jokeData || {};
 
     // Art Institute returns .data
-    const artworks = artwrokData.data;
-    const randomArt = artworks.length > 0 ? artworks[Math.floor(Math.random() * artworks.length)];
+    const artworks = artwrokData.dat || [];
+    const randomArt = artworks.length > 0 ? artworks[Math.floor(Math.random() * artworks.length)]: null;
 
     // Display feedback based on the data (rubric: API - display feedback)
     if(successEl) {
-    successEl.className = "text-emerald-600 font-bold mb-4";
-    successEl.innerHTML = `✅ Loaded 6 discovery moments for topic: <em>${formData.topic || "anything"}</em>`;
+      const topicText = (form.elements.topic && form.elements.topic.value.trim()) || "General Matrix";
+    successEl.className = "text-emerald-500 font-bold mb-4 text-xs tracking-wide uppercase";
+    successEl.innerHTML = `✅ Loaded 6 discovery moments for topic: <em>${topicText}</em>`;
     }
 // Here the browser checks the localStorage storage for any user posts. if it finds some, a for loop
 // starts at zero, visits every single item on the list, packahes it clearly inside this neat HTML template tags,
 // and sticks it onto the page.
-    if(resultEl) {
-    resultEl.innerHTML = `
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <article class="bg-blue-50 p-4 rounded">
-          <h3 class="font-bold">🔬 NYT Science</h3>
-          <p>${randomScience ? randomScience.title : "No data."}</p>
-        </article>
-        <article class="bg-green-50 p-4 rounded">
-          <h3 class="font-bold">🌍 NYT World</h3>
-          <p>${randomWorld ? randomWorld.title : "No data."}</p>
-        </article>
-        <article class="bg-purple-50 p-4 rounded">
-          <h3 class="font-bold">🎨 NYT Arts</h3>
-          <p>${randomArts ? randomArts.title : "No data."}</p>
-        </article>
-        <article class="bg-indigo-50 p-4 rounded">
-          <h3 class="font-bold">🚀 NASA Picture of the Day</h3>
-          <p>${nasaPicture.title || "No data."}</p>
-          ${nasaPicture.url ? `<figure><img src="${nasaPicture.url}" class="mt-2 rounded max-h-48" alt="${nasaPicture.title || "NASA Media"}" /></figure>` : ""}
-        </article>
-        <article class="bg-yellow-50 p-4 rounded">
-          <h3 class="font-bold">💻 Programming Joke</h3>
-          <p>${joke.joke || (joke.setup ? joke.setup + " — " + joke.delivery : "No joke found.")}</p>
-        </article>
-        <article class="bg-pink-50 p-4 rounded">
-          <h3 class="font-bold">🖼️ Art Institute</h3>
-          <p>${randomArt ? randomArt.title : "No data available."}</p>
-          ${randomArt && randomArt.thumbnail && randomArt.thumbnail.lqip ? `<figure><img src="${randomArt.thumbnail.lqip}" class="mt-2 rounded max-h-48" alt="${randomArt.title || 'Artwork'}" /></figure>` : ""}
-        </article>
+   if (resultEl) {
+      resultEl.innerHTML = `
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-blue-400">🔬 NYT Science Hub</h3>
+            <p class="text-xs text-slate-300 mt-1">${randomScience ? randomScience.title : "No data received."}</p>
+          </article>
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-green-400">🌍 NYT World News</h3>
+            <p class="text-xs text-slate-300 mt-1">${randomWorld ? randomWorld.title : "No data received."}</p>
+          </article>
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-purple-400">🎨 NYT Arts Division</h3>
+            <p class="text-xs text-slate-300 mt-1">${randomArts ? randomArts.title : "No data received."}</p>
+          </article>
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-indigo-400">🚀 NASA Image Capture</h3>
+            <p class="text-xs text-slate-300 mt-1">${nasaPicture.title || "No data received."}</p>
+            ${nasaPicture.url ? `<figure class="mt-2"><img src="${nasaPicture.url}" class="max-h-40 w-full object-cover rounded-xl" alt="NASA Media" /></figure>` : ""}
+          </article>
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-yellow-400">💻 Debugging Humor</h3>
+            <p class="text-xs text-slate-300 mt-1">${joke.joke || (joke.setup ? joke.setup + " — " + joke.delivery : "No data received.")}</p>
+          </article>
+          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
+            <h3 class="font-bold text-sm text-pink-400">🖼️ Art Institute Repository</h3>
+            <p class="text-xs text-slate-300 mt-1">${randomArt ? randomArt.title : "No data received."}</p>
+            ${randomArt && randomArt.thumbnail && randomArt.thumbnail.lqip ? `<figure class="mt-2"><img src="${randomArt.thumbnail.lqip}" class="max-h-40 w-full object-cover rounded-xl" alt="Artwork" /></figure>` : ""}
+          </article>
       </section>
-    `;
+      `;
   }
 
      } catch (error) {
     console.error("Error processing API data:", error);
      if(errorEl) {
-      errorEl.className = "text-red-600 font-bold";
-    errorEl.innerHTML = "Failed to load API facts. Check your connection or API Keys.";
+      errorEl.className = "text-red-600 font-bold text-xs uppercase tracking-wider";
+    errorEl.innerHTML = "❌Failed to load API facts. Check your connection or API Keys.";
     }
     
   }
@@ -481,6 +461,7 @@ function initPage3Profile(activeUser) {
       window.location.href = "index-discover.html";
     }
   });
+}
 
 }
 //======================================================================
@@ -491,9 +472,18 @@ function initPage3Profile(activeUser) {
 //=======================================================================
 
 function initPage4OrbitWall (activeUser) {
+
+  // create a fallback safety net if no user session is active so tha page 
+  // doesn't crash or create an error
+  const currentUser = activeUser || {
+    username: "Annoymous User",
+    role: "Guest Explorer",
+    domainPreference: "computing"
+  }
   // Show username everywhere it's reference in the layout
   const displayNames = document.querySelectorAll("#display-name, #profile-name");
   displayNames.forEach((el) => {
+    // Dot -notation updates to DOM elements (rubric: objects - dot notation)
     el.textContent = activeUser.username;
   });
 
@@ -524,11 +514,11 @@ function initPage4OrbitWall (activeUser) {
     html += `
         <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 space-y-3 mb-4">
           <header class="flex justify-between items-center text-xs">
-            <span class="font-bold text-blue-400">${post.domain}</span>
+            <span class="font-bold text-blue-400">${post.domain || "General"}</span>
             <div class="flex items-center gap-2 text-slate-500">
-              <span class="italic text-[10px]">[by ${post.username}]</span>
-              <span>${post.timestamp}</span>
-              <span>${post.visibility}</span>
+              <span class="italic text-[10px]">[by ${post.username || "Annymous"}]</span>
+              <span>${post.timestamp || "Just now"}</span>
+              <span>${post.visibility || "public"}</span>
             </div>
           </header>
           <p class="text-slate-200">${post.text}</p>
@@ -548,12 +538,16 @@ function initPage4OrbitWall (activeUser) {
   const publishBtn = document.getElementById("publishBtn");
   if (publishBtn) {
     publishBtn.addEventListener("click", () => {
+      // input to make sure the boxes exist before grabbing text values
       const content = textInput.value.trim();
+      const imageURL = imageInput.value.trim();
+
       if(!content) {
         alert("Write something before publishing your post.");
         return;
       }
 
+      // Build the new post object (rubric: object - new object with properties)
       const newPost = {
         username: activeUser.username,
         domain: userDomainTitle,
@@ -564,13 +558,13 @@ function initPage4OrbitWall (activeUser) {
       };
 
       const runtimePosts = JSON.parse(localStorage.getItem("novus_posts")) || [];
-      runtimePosts.unshift(newPost); // newest first
+      runtimePosts.unshift(newPost); // newest first item placement
       localStorage.setItem("novus_posts", JSON.stringify(runtimePosts));
 
       // Reset form fields
-      textInput.value = "";
-      imageInput.value = "";
-
+     if(textInput) textInput.value = "";
+     if(imageInput) imageInput.value = "";
+// Instanly redraw the wall with the new item included
       renderOrbitPosts();
     });
   }
