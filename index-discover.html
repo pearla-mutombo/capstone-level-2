@@ -3,9 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovusNet | Web Storage</title>
     <!-- Tailwind and TW elements script and CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
       rel="stylesheet" />
@@ -31,7 +29,10 @@
     <script
       src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
       defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <title>NovusNet | Web Storage</title>
   </head>
   <body class="bg-slate-900 flex flex-col min-h-screen">
     <header>
@@ -75,18 +76,27 @@
       class="container mx-auto p-6 max-w-lg bg-white mt-10 rounded-lg shadow-xl">
       <h2 class="text-2xl font-bold mb-4">Post a Moment</h2>
 
-      <form id="discovery-from">
-        <label for="username">Username</label>
-       <input id="username" name="username" type="text" required />
+      <form id="discovery-from" class="space-y-4">
+        <fieldset class="border p-4 rounded">
+          <legend class="font-bold px-2">Community Content</legend>
+        <div>
+        <label for="username" class="block font-medium mb-1" placeholder="username">Username</label>
+        <texarea id="username" placeholder="Username"></texarea>
+       <input id="username" name="username" type="text" class="w-full border rounded p-2 focus:ring-2 focus-blue-400 placeholder-slate-500" required />
+       </div>
        
-    <label for="novus-select">Primary Domain</label>
-    <select id="novus-select" name="domain">
+       </div>
+       <div>
+    <label for="novus-select" class="block font-medium mb-1">Primary Domain</label>
+    <select id="novus-select" name="domain" class="w-full border rounded p-2">
       <option value="computing">Advanced Computing</option>
       <option value="news">World News</option>
-      <option value="arts">Artistry</option>
+      <option value="arts">Arts</option>
       <option value="science">Science</option>
      <option value="law">Global Jurisprudence</option>
     </select>
+    </div>
+    </fieldset>
         <!-- place for radio buttons -->
         <div class="flex gap-4">
           <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
@@ -125,13 +135,13 @@
           class="inline-block rounded bg-blue-600 px-6 py-2.5 text-white"
           id="loginBtn"
           value="loginBtn">
-          Log In
+          Log in
         </button>
         <button
           type="button"
           data-twe-ripple-init
           data-twe-ripple-color="light"
-          class="inline-block rounded bg-white-600 px-6 py-2.5 text-black"
+          class="inline-block rounded bg-white-300 px-6 py-2.5 text-blue-600 border-blue-600 text-base font-medium cursor-pointer hover:bg-gray transition"
           id="createBtn"
           value="createBtn">
           Create Account
@@ -140,21 +150,21 @@
           type="button"
           data-twe-ripple-init
           data-twe-ripple-color="light"
-          class="inline-block rounded bg-blue-600 px-6 py-2.5 text-white"
+          class="inline-block rounded bg-white-600 px-6 py-2.5 text-black border-black-600 text-base font-medium cursor pointer hover:bg-white transition"
           id="forgotBtn"
           value="forgotBtn">
           Forgot Password?
         </button>
       </form>
     </main>
-    <div id="feedback" class="block mt-4 text-center font-bold"></divt>
+    <div id="feedback" class="block mt-4 text-center font-bold"></div>
 
     <footer class="big-white p-6 text-center border-t">
       <div
         class="flex flex-row justify-around gap-6 mt-3 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
         NOVUS
       </div>
-      <p>@ Novus 2026</p>
+      <p>@ 2026 Pearla Mutombo | Authentic Social Computing | Novus</p>
     </footer>
   </body>
 </html>

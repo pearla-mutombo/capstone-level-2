@@ -3,9 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <!-- Tailwind and TW elements script and CDN -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          fontFamily: {
+            sans: ["Roboto", "sans-serif"],
+            body: ["Roboto", "sans-serif"],
+            mono: ["ui-monospace", "monospace"],
+          },
+        },
+        corePlugins: {
+          preflight: false,
+        },
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
+      defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Citation</title>
 </head>
 <body>
-    
+    <header></header>
+    <main>
+        <form></form>
+    </main>
+    <footer class="big-white p-6 text-center border-t">
+      <div
+        class="flex flex-row justify-around gap-6 mt-3 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+        NOVUS
+      </div>
+        <p>@ 2026 Pearla Mutombo | Authentic Social Computing | Novus</p>
+    </footer>
 </body>
 </html>
