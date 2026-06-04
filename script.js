@@ -6,7 +6,7 @@
 //==================================================================
 
 //====================================================================
-// SECTION 1 - Constants and Storage Initializatio
+// SECTION 3 - Constants and Storage Initialization
 // Note: Before any page loads, set up a shared data.
 // "domainMap" which translates short codes into pretty labels.
 // We seed localStorage with 2 sample posts on first visit.
@@ -47,7 +47,7 @@ if (!localStorage.getItem("novus_posts")) {
 
 //====================================================================
 // SECTION 2 - Central Router (runs on every page)
-// (Note: When any HTML page loads, this listenr fires. 
+// (Note: When any HTML page loads, this listner fires. 
 // reads the filename from the URL and decides what to do:
 //  - Block private pages if no one is logged in
 //  - Send logged-in users away from the login page
@@ -96,7 +96,7 @@ document.addEventListener ("DOMContentLoaded", () => {
   }
 });
 //======================================================================
-// SECTION 3. Page 1: Portal (index-discover.html) 
+// SECTION 1. Page 1: Portal (index-discover.html) 
 // (Note: This handles login, signup, and forgot password.
 // Each button has its own id in the HTML and its own click handler.)
 //=======================================================================
@@ -104,18 +104,46 @@ document.addEventListener ("DOMContentLoaded", () => {
 function initPage1Portal () {
   const form = document.getElementById("discovery-form");
   const feedback = document.getElementById("feedback");
-  if(!form) return;
+
+  form.onsubmit = handleLoginSubmit;
+
+  function handleLoginSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+
+    const data = {
+      username: form.elements.username.value,
+      password: form.elements.password.value
+  };
+  
+   if(!username) {
+      showError("Please enter your username before logging in.");
+      return;
+    }
+   
+    if(!password) {
+      showError("Please enter your password before loggin in.");
+      return;
+    }
+
+  // Save to storage (rubric: Storage  - save)
+    localStorage.setItem("novus_session", JSON.stringify(targetSession));
+
+
+  }
+  // if(!form) return;
 
   // Reusable helper functions with parameters (rubric: Functions)
-  const showError = (message) => { 
-    feedback.className = "block mt-4 text-center font-bold text-red-500"; 
-    feedback.textContent = message;
-  };
+  // const showError = (message) => { 
+  //   feedback.className = "block mt-4 text-center font-bold text-red-500"; 
+  //   feedback.textContent = message;
+  // };
 
-  const showOkay = (message) => {
-     feedback.className = "block mt-4 text-center font-bold text-emerald-500"; 
-     feedback.textContent = message;
-    };
+  // const showOkay = (message) => {
+  //    feedback.className = "block mt-4 text-center font-bold text-emerald-500"; 
+  //    feedback.textContent = message;
+  //   };
 
 // Reusable function with a parameter (rubric: Functions)
 // Called TWICE below - once for login, once for signup.
@@ -138,13 +166,7 @@ form.addEventListener("submit", (event) => event.preventDefault());
     const username = form.elements.username.value.trim();
     const domain = form.elements.domain.value;
 
-    if(!username) {
-      showError("Please enter your username before logging in.");
-      return;
-    }
-   
-    const loginPassword = prompt("Enter your access password:");
-    if(!loginPassword) return;
+
 
     //First use of validPasswordComplexitity (rubric: Functions Called two more times)
     const isLoginPasswordValid = validatePasswordComplexity(loginPassword);
