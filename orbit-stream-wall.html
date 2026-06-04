@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <!-- Tailwind and TW elements script and CDN -->
+    <!-- Fonts and Tailwind CSS Setup -->
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
       rel="stylesheet" />
@@ -30,190 +30,156 @@
     <script
       src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
       defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="script.js" defer></script>
     <title>NovusNet | Wall-Timeline</title>
   </head>
-  <body class="bg-gray-50 flex flex-col min-h-screen">
-    <header>
-      <!-- TW elements in the navbar to make it pop -->
+  <body
+    class="bg-slate-900 flex flex-col min-h-screen text-slate-100 font-sans antialiased">
+    <!-- SINGLE UNIFIED NAVBAR -->
+    <header
+      class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
       <nav
-        class="flex-no-wrap relative flex w-full items-center justify-between bg-white py-4 shadow-md lg:flex-wrap lg:justify-start">
-        <div class="flex w-full flex-wrap items-center justify-between px-6">
-          <div class="flex items-center">
-            <a class="text-xl font-bold text-blue-600" href="index-discover.html"
-              >Novus</a
-            >
-          </div>
-          <ul class="flex list-style-none mr-auto pl-4">
-            <li class="px-2">
-              <a href="index-discover.html" class="text-blue-500">Portal</a>
-            </li>
-            <li class="px-2">
-              <a href="feed.html" class="text-gray-500 hover:text-blue-500"
+        class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-6">
+          <a
+            class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
+            href="index-discover.html">
+            NOVUS
+          </a>
+          <!-- Navigation Menu Links -->
+          <ul class="flex space-x-4 list-none m-0 p-0 text-sm font-medium">
+            <li>
+              <a
+                href="feed.html"
+                class="text-slate-400 hover:text-blue-400 transition"
                 >Feed</a
               >
             </li>
-            <li class="px-2">
-              <a href="profile.html" class="text-gray-500 hover:text-bue-500"
+            <li>
+              <a
+                href="profile.html"
+                class="text-slate-400 hover:text-blue-400 transition"
                 >Profile</a
               >
             </li>
-            <li class="px-2">
+            <li>
               <a
                 href="orbit-stream-wall.html"
-                class="text-gray-500 hover:text-bue-500"
+                class="text-blue-400 font-semibold transition"
                 >Orbit Wall</a
               >
             </li>
           </ul>
         </div>
-      </nav>
-    </header>
-    <main>
-      <span id="profile-name"></span>
-      <span id="display-role"></span>
-      <div
-        class="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased">
-        <!-- Top Navigation Bar -->
-        <header
-          class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
-          <h1
-            class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-            NOVUS
-          </h1>
+
+        <!-- User Session Indicator & Logout Button -->
+        <div class="flex items-center gap-4">
           <div class="flex items-center gap-2">
             <span
               class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span id="display-name" class="font-medium text-sm text-slate-300"
-              >Pearla</span
+              >Loading...</span
             >
           </div>
-        </header>
+          <button
+            id="logout-btn"
+            class="px-3 py-1.5 bg-red-500/20 hover:bg-red-500 border border-red-500/30 text-red-200 hover:text-white rounded-xl text-xs font-semibold transition duration-200">
+            Log out
+          </button>
+        </div>
+      </nav>
+    </header>
 
-        <!-- Main Layout Splitter -->
-        <main
-          class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 p-6">
-          <!-- 1. LEFT SIDEBAR: PROFILE & TOOLS -->
-          <aside class="space-y-6 md:col-span-1">
-            <div
-              class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-5 space-y-4">
-              <div>
-                <h2 class="font-bold text-lg text-slate-100" id="profile-name">
-                  Pearla
-                </h2>
-                <p
-                  class="text-xs text-blue-400 font-medium tracking-wide uppercase mt-0.5"
-                  id="display-role">
-                  Founding Member
-                </p>
-              </div>
-              <div
-                class="pt-3 border-t border-slate-700/50 flex justify-between text-xs text-slate-400">
-                <span>Active Status</span>
-                <span class="text-emerald-400 font-mono">Online</span>
-              </div>
-            </div>
-          </aside>
+    <!-- MAIN LAYOUT GRID SPLITTER -->
+    <main
+      class="max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 p-6 flex-grow">
+      <!-- LEFT SIDEBAR: PROFILE DATA -->
+      <aside class="space-y-6 md:col-span-1">
+        <div
+          class="bg-slate-800/50 border border-slate-800 rounded-2xl p-5 space-y-4">
+          <div>
+            <h2 class="font-bold text-lg text-slate-100" id="profile-name">
+              Loading...
+            </h2>
+            <p
+              class="text-xs text-blue-400 font-medium tracking-wide uppercase mt-0.5"
+              id="display-role">
+              Loading...
+            </p>
+          </div>
+          <div
+            class="pt-3 border-t border-slate-800 flex justify-between text-xs text-slate-400">
+            <span>Active Status</span>
+            <span class="text-emerald-400 font-mono animate-pulse">Online</span>
+          </div>
+        </div>
+      </aside>
 
-          <!-- 2. CENTER COLUMN: THE CANVAS (THE STREAM) -->
-          <section class="space-y-6 md:col-span-2">
-            <!-- Post Creator Box -->
-            <div
-              class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-5">
-              <label for="post-input" class="sr-only">Share an update<strong id="domain-label"></strong></label>
-              <textarea
-                id="post-input"
-                rows="3"
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
-                placeholder="Share an update to your Orbit..."></textarea>
+      <!-- CENTER COLUMN: THE CANVAS FEED INPUT & LIST -->
+      <section class="space-y-6 md:col-span-2">
+        <!-- Post Creator Form Box -->
+        <div class="bg-slate-800/50 border border-slate-800 rounded-2xl p-5">
+          <label for="post-input" class="sr-only">Share an update</label>
+          <textarea
+            id="post-input"
+            rows="3"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
+            placeholder="Share an update to your Orbit..."></textarea>
 
-              <!-- NEW: Optional Image URL Input Box -->
-              <input
-                type="text"
-                id="post-image-input"
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 mt-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500"
-                placeholder="Optional: Paste an image URL here (e.g., https://example.com)" />
-              <div class="flex justify-between items-center mt-3">
-                <span class="text-xs text-slate-500"
-                  >Posting to:
-                  <strong class="text-slate-300"
-                    >Advanced Computing</strong
-                  ></span
-                >
-                <button
-                id="publishBtn"
-                type="button"
-                  class="bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition duration-200">
-                  Publish Moment
-                </button>
-              </div>
-            </div>
+          <!-- Optional Image Input URL Box -->
+          <input
+            type="text"
+            id="post-image-input"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 mt-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            placeholder="Optional: Paste an image URL here (e.g., https://example.com)" />
 
-            <!-- Feed Container (Where posts display) -->
-            <div id="canvas-feed" class="space-y-4">
-              <!-- Individual Post Card Example -->
-              <div
-                class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 space-y-3">
-                <div class="flex justify-between items-center text-xs">
-                  <span class="font-bold text-blue-400"
-                    >Advanced Computing</span
-                  >
-                  <span class="text-slate-500 font-mono text-[10px]"
-                    >Just now</span
-                  >
-                </div>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                  Just finished setting up the dynamic UI generation script for
-                  the dashboard. The reusable components architecture is working
-                  perfectly!
-                </p>
-                <div
-                  class="flex gap-4 pt-2 border-t border-slate-800/50 text-slate-500 text-xs">
-                  <button class="hover:text-blue-400 transition">
-                    ▲ Upvote
-                  </button>
-                  <button class="hover:text-emerald-400 transition">
-                    💬 Discuss
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-xs text-slate-500">
+              Posting to:
+              <strong id="domain-label" class="text-slate-300"
+                >Loading Domain...</strong
+              >
+            </span>
+            <button
+              id="publishBtn"
+              type="button"
+              class="bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition duration-200">
+              Publish Moment
+            </button>
+          </div>
+        </div>
 
-          <!-- 3. RIGHT SIDEBAR: CONTEXT PANEL -->
-          <aside class="space-y-6 md:col-span-1 hidden md:block">
-            <div
-              class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-5">
-              <h3
-                class="font-bold text-xs tracking-wider text-slate-400 uppercase mb-3">
-                Trending Niches
-              </h3>
-              <ul class="space-y-3 text-sm">
-                <li class="flex justify-between items-center">
-                  <span class="text-slate-300">#WorldNews</span>
-                  <span class="text-xs text-slate-500 font-mono"
-                    >1.2k views</span
-                  >
-                </li>
-                <li class="flex justify-between items-center">
-                  <span class="text-slate-300">#Arts</span>
-                  <span class="text-xs text-slate-500 font-mono"
-                    >840 views</span
-                  >
-                </li>
-              </ul>
-            </div>
-          </aside>
-        </main>
-      </div>
+        <!-- Dynamic Feed Target Container -->
+        <div id="canvas-feed" class="space-y-4">
+          <p class="text-center text-xs text-slate-500 py-6">
+            Connecting orbit stream timeline grid...
+          </p>
+        </div>
+      </section>
+
+      <!-- COMMUNITY CONTEXT PANEL -->
+      <aside class="space-y-6 md:col-span-1 hidden md:block">
+        <div
+          class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 text-xs text-slate-400 space-y-2">
+          <h3 class="font-bold text-slate-200 uppercase tracking-wider mb-2">
+            Network Rulebook
+          </h3>
+          <p>
+            Posts submitted here sync locally across your profile feeds
+            instantly.
+          </p>
+        </div>
+      </aside>
     </main>
-    <footer class="big-white p-6 text-center border-t">
+
+    <footer
+      class="border-t border-slate-800 bg-slate-900/40 py-6 text-center text-xs text-slate-500 font-mono">
       <div
-        class="flex flex-row justify-around gap-6 mt-3 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+        class="flex flex-row justify-around gap-6 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-2">
         NOVUS
       </div>
-      <p>@ 2026 Pearla Mutombo | Authentic Social Computing | Novus</p>
+      <p>&copy; 2026 Pearla Mutumbo | Authentic Social Network | Novus</p>
     </footer>
   </body>
 </html>

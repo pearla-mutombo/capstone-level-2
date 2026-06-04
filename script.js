@@ -64,7 +64,7 @@ document.addEventListener ("DOMContentLoaded", () => {
   //Boolean variable starting with "has" (rubric: Conditionals - Boolean variable)
   const hasSession = activeUser !== null;
 
-  const privatePages = ["feed.html", "profile.html", "orbi-stream-wall.html"];
+  const privatePages = ["feed.html", "profile.html", "orbit-stream-wall.html"];
 
   // Conditional: redirect logged-out users away from private pages
   if (privatePages.includes(pageName) && !hasSession) {
@@ -78,8 +78,8 @@ document.addEventListener ("DOMContentLoaded", () => {
     window.location.href = "feed.html";
     return;
   } 
-
-  //Call the right setup function for this page
+  
+  //Call the right setup function for this page - routing logic checks
   switch (pageName) {
     case "index-discover.html":
       initPage1Portal();
@@ -101,13 +101,18 @@ document.addEventListener ("DOMContentLoaded", () => {
 // Each button has its own id in the HTML and its own click handler.)
 //=======================================================================
 
-function initPage1Portal () {
+funtcion initPage1Portal () {
   const form = document.getElementById("discovery-form");
   const feedback = document.getElementById("feedback");
 
+  // safety guard: stop if the form isn't on the current HTML page
+  if(!form) return;
+
+  // Reusable helper functions with parameters (rubric: Functions)
+
   form.onsubmit = handleLoginSubmit;
 
-  function handleLoginSubmit(event) {
+  function initPage1Portal(event) {
     event.preventDefault();
     
     const form = event.target;
@@ -130,8 +135,8 @@ function initPage1Portal () {
   // Save to storage (rubric: Storage  - save)
     localStorage.setItem("novus_session", JSON.stringify(targetSession));
 
-
   }
+  
   // if(!form) return;
 
   // Reusable helper functions with parameters (rubric: Functions)
@@ -160,15 +165,28 @@ form.addEventListener("submit", (event) => event.preventDefault());
 
  // Action A: LOG IN 
  const loginBtn = document.getElementById("loginBtn");
- if (text === "log in") {
+ if (loginBtn) {
   loginBtn.addEventListener ("click", () => {
     //Access form values via form.elements (rubric: Form)
-    const username = form.elements.username.value.trim();
+    const username = form.elements.username.value.trim(); "";
     const domain = form.elements.domain.value;
+    const loginPassword = form.elemnts.password.value;
 
+    if(!username) {
+      showError("Please enter your username before logging in.");
+      return;
+    }
 
+    if(!loginPassword) {
+      showError("Please enter your password before logging in.");
+      return;
+    }
 
     //First use of validPasswordComplexitity (rubric: Functions Called two more times)
+    // Instead of writing identical messay checking logic over and over again, 
+    // we build a single automated machine (validatePasswordComplexity). 
+    // We drop the login password inot it first, and later 
+    // we drop the signup password into it.
     const isLoginPasswordValid = validatePasswordComplexity(loginPassword);
     if(!isLoginPasswordValid) {
       showError("Password must be eight characters with a symbol.");
@@ -176,6 +194,9 @@ form.addEventListener("submit", (event) => event.preventDefault());
     }
 
     // Build the session object (rubric - Object - new object with properties)
+    // When someone successfully logs in the script packs their digital ID badge
+    // (targetSession) inside a string box and locks it safely away inside the browser's
+    // persistent memory vault (localStorage), ensurinf they stay logged in even if they refresh.
     const targetSession = {
       username: user,
       role: "Founding Member",
@@ -244,7 +265,8 @@ if (forgotBtn) {
 function initPage2Feed() {
   // Render public posts
   const feedSection = document.getElementById("feed-section");
-  if(!feedSection) {
+
+  if(feedSection) {
     const posts = JSON.parse(localStorage.getItem("novus_posts")) || [];
     const publicPosts = posts.filter((p) => p.visibility === "public");
 
@@ -278,14 +300,13 @@ function initPage2Feed() {
   }
 
   // API explorer form
-  const apitForm = document.getElementById("form-2");
+  const apiForm = document.getElementById("form-2");
   if(!apiForm) return;
 
   apiForm.onsubmit = handleApiSubmit;
 }
 
 // Handler for the API form (separate function so it stays clean)
-
 async function handleApiSubmit(event) {
   event.preventDefault();
 
@@ -294,7 +315,7 @@ async function handleApiSubmit(event) {
   const successEl = document.getElementById("success");
   const resultEL = document.getElementById("result");
   
-  // Clear old feedback
+  // Clear old feedback if the elements exist
   errorEl.innerHTML = "";
   successEl.innerHTML = "";
   resultEL.innerHTML = "";
@@ -307,16 +328,19 @@ async function handleApiSubmit(event) {
     domain: activeUser.domainPreference || "computing"
   };
   
-  // try/catch handles API errors (rubric: Conditionals - try/catch)
+  // Try/catch handles API errors (rubric: Conditionals - try/catch)
   try {
     // Fire all 6 fetches in parallel
+    // Normally, javaScript fetches information from the internet one item at a time. 
+    // Using Promise.all, it simultaneously calls all six web services at the exact same moment.
+    // They return in parallel, cutting down the user's wait time significantly.
     const [response1, response2, response3, response4, response5, response6] = await Promise.all([
-      fetch("https://api.nytimes.com/svc/topstories/v2/science.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Science News response1
-      fetch("https://api.nytimes.com/svc/topstories/v2/world.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // World News response2
-      fetch("https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Arts News response3
-      fetch("https://api.nasa.gov/planetary/apod?api_key=uqt1ryc8YuEJtkkrTpIJoJQP5SsyJz6EZjGTXuFS"), // NASA picture of the Day response4
-      fetch("https://v2.jokeapi.dev/joke/Programming?type=single"), // Programming Joke response5
-      fetch("https://api.artic.edu/api/v1/artworks/search") // Artwork response6
+      fetch("https://api.nytimes.com/svc/topstories/v2/science.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Science News
+      fetch("https://api.nytimes.com/svc/topstories/v2/world.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // World News
+      fetch("https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Arts News
+      fetch("https://api.nasa.gov/planetary/apod?api_key=uqt1ryc8YuEJtkkrTpIJoJQP5SsyJz6EZjGTXuFS"), // NASA picture of the Day
+      fetch("https://v2.jokeapi.dev/joke/Programming?type=single"), // Programming Joke
+      fetch("https://api.artic.edu/api/v1/artworks/search") // Artwork 
     ]);
 
     // Parse all 6 responses as JSON in parallel
@@ -330,15 +354,19 @@ async function handleApiSubmit(event) {
     ]);
 
     // Pick random items from each list-style API.
-    // Math.floor rounds DOWN to a whole nu,ber so we get a valid array index.
+    // Math.floor rounds DOWN to a whole number so we get a valid array index.
+    // Because the news channels, and art hubs return long lists of content,
+    //  in this script I use a math filter (Math.random()) to grab a random index integer from
+    // the arrays, ensuring that every time your page is loaded or submitted, a completely
+    // dynamic set of titles updates on screen.
     const scienceResults = scienceData.results;
-    const randomScience = scienceResults[Math.floor(Math.random() * scienceResults.length)];
+    const randomScience = scienceResults.length > 0 ? scienceResults[Math.floor(Math.random() * scienceResults.length)];
 
     const worldResults = worldData.results;
-    const randomWorld= worldResults[Math.floor(Math.random() * worldResults.length)];
+    const randomWorld= worldResults.length > 0 ? worldResults[Math.floor(Math.random() * worldResults.length)];
 
     const artsResults = artsData.results;
-    const randomArts= artsResults[Math.floor(Math.random() * artsResults.length)];
+    const randomArts= artsResults.length > 0 ? artsResults[Math.floor(Math.random() * artsResults.length)];
 
     // NASA APOD returns a single object, not a list a picture of the day
     const nasaPicture = nasaData;
@@ -346,15 +374,20 @@ async function handleApiSubmit(event) {
     //JokeAPI single returns one joke at a time
     const joke = jokeData;
 
-    // Art Institute returns .data, not results
+    // Art Institute returns .data
     const artworks = artwrokData.data;
-    const randomArt = artworks[Math.floor(Math.random() * artworks.length)];
+    const randomArt = artworks.length > 0 ? artworks[Math.floor(Math.random() * artworks.length)];
 
     // Display feedback based on the data (rubric: API - display feedback)
+    if(successEl) {
     successEl.className = "text-emerald-600 font-bold mb-4";
     successEl.innerHTML = `✅ Loaded 6 discovery moments for topic: <em>${formData.topic || "anything"}</em>`;
-
-    resultEL.innerHTML = `
+    }
+// Here the browser checks the localStorage storage for any user posts. if it finds some, a for loop
+// starts at zero, visits every single item on the list, packahes it clearly inside this neat HTML template tags,
+// and sticks it onto the page.
+    if(resultEl) {
+    resultEl.innerHTML = `
     <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <article class="bg-blue-50 p-4 rounded">
           <h3 class="font-bold">🔬 NYT Science</h3>
@@ -371,24 +404,27 @@ async function handleApiSubmit(event) {
         <article class="bg-indigo-50 p-4 rounded">
           <h3 class="font-bold">🚀 NASA Picture of the Day</h3>
           <p>${nasaPicture.title || "No data."}</p>
-          ${nasaPicture.url ? `<figure><img src="${nasaPicture.url}" class="mt-2 rounded max-h-48" alt="${nasaPicture.title}" /></figure>` : ""}
+          ${nasaPicture.url ? `<figure><img src="${nasaPicture.url}" class="mt-2 rounded max-h-48" alt="${nasaPicture.title || "NASA Media"}" /></figure>` : ""}
         </article>
         <article class="bg-yellow-50 p-4 rounded">
           <h3 class="font-bold">💻 Programming Joke</h3>
-          <p>${joke.joke || (joke.setup ? joke.setup + " — " + joke.delivery : "No joke today.")}</p>
+          <p>${joke.joke || (joke.setup ? joke.setup + " — " + joke.delivery : "No joke found.")}</p>
         </article>
         <article class="bg-pink-50 p-4 rounded">
           <h3 class="font-bold">🖼️ Art Institute</h3>
-          <p>${artworkPicture.title || "No data."}</p>
-          ${artworkImage.url ? `<figure><img src="${artworks.lqip}" class="mt-2 rounded max-h-48" alt="${artworkImage.alt_text}" /></figure>` : ""}
+          <p>${randomArt ? randomArt.title : "No data available."}</p>
+          ${randomArt && randomArt.thumbnail && randomArt.thumbnail.lqip ? `<figure><img src="${randomArt.thumbnail.lqip}" class="mt-2 rounded max-h-48" alt="${randomArt.title || 'Artwork'}" /></figure>` : ""}
         </article>
       </section>
     `;
+  }
 
-  } catch (error) {
+     } catch (error) {
     console.error("Error processing API data:", error);
-    errorEl.className = "text-red-600 font-bold";
-    errorEl.innerHTML = "Failed to load API facts. Check your connection."
+     if(errorEl) {
+      errorEl.className = "text-red-600 font-bold";
+    errorEl.innerHTML = "Failed to load API facts. Check your connection or API Keys.";
+    }
     
   }
 
@@ -400,25 +436,51 @@ async function handleApiSubmit(event) {
 // using dot nation (activeUser.username, .role, .bio).
 //=====================================================================
 
+// when this function starts, it accepts the activeUser badge. if that badge is missing or broken,
+//  the code automatically creates a generic "Guest Explorer"
+// placeholder badge so the webpage doesn't freeze or crash.
 function initPage3Profile(activeUser) {
   const nameEl = document.getElementById("display-name");
   const roleEl = document.getElementById("display-role");
   const bioEl = document.getElementById("display-bio");
 
-  if (!nameEl) return;
-  
-  // Dot-notation updates to DOM elements (rubric: Objects - dot notation)
-  nameEl.textContent = activeUser.username;
-  roleEl.textContent = activeUser.role;
-  bioEl.textContent = activeUser.bio;
+// Created a backup safety net for Guest if there's no logged-in user data
+  const userSession = activeUser || {
+    username: "Guest Explorer",
+    role: "Unverified",
+    bio: "No active session found."
+  };
 
-  // Logout handler - attached to the global window so HTML onclicl can call it
-  window.resetProfile = () => {
+  // Instead of throwing an error if an HTML item is missing, the code
+  // checks each box using (if) (nameEl) statement. if it finds the name block
+  // on the HTML page, it writes the name text using dot notation (userSession.username).
+  // if it doesn't find it. it quietlt moves to the next item.
+
+  // Only update the profile text boxes if they actually exist on this HTML page
+  if (nameEl) {
+    // Dot-notation updates to DOM elements (rubric: Objects - dot notation)
+    nameEl.innerText = userSession.username;
+  }
+
+  if (roleEl) {
+    roleEl.innerText = userSession.role;
+  }
+
+  if (bioEl) {
+    bioEl.innerText = userSession.bio;
+  }
+
+  // Logout handler - attached to the global window so HTML onclick can call it
+  const logoutBtn = document.getElementById("logout-btn");
+
+   if (logoutBtn) {
+    // Listen for the user clicking the button directly 
+    logoutBtn.addEventListener("click", () => {
     if (confirm("Are you sure you want to clear your session and disconnect?")) {
       localStorage.removeItem("novus_session");
       window.location.href = "index-discover.html";
     }
-  };
+  });
 
 }
 //======================================================================
