@@ -3,24 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Novus</title>
-
-    <!-- Tailwind v3 via CDN (rubric: "Tailwind v3 in head tag") -->
+    <title>NovusNet | Web Storage</title>
+    <!-- Tailwind and TW elements script and CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- TW Elements (rubric: "Properly install TW Elements") -->
     <link
-      href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
       rel="stylesheet" />
-
-    <!-- Custom mobile-first CSS -->
-    <link rel="stylesheet" href="styles.css" />
-
-    <!-- shared JS, deferred so it runs after HTML loads (rubric: "Properly defer scripts") -->
-    <script defer src="script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          fontFamily: {
+            sans: ["Roboto", "sans-serif"],
+            body: ["Roboto", "sans-serif"],
+            mono: ["ui-monospace", "monospace"],
+          },
+        },
+        corePlugins: {
+          preflight: false,
+        },
+      };
+    </script>
     <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+      src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
+      defer></script>
+    <script src="script.js" defer></script>
   </head>
   <body class="bg-slate-900 flex flex-col min-h-screen">
     <header>
@@ -64,38 +75,18 @@
       class="container mx-auto p-6 max-w-lg bg-white mt-10 rounded-lg shadow-xl">
       <h2 class="text-2xl font-bold mb-4">Post a Moment</h2>
 
-      <form id="discovery-form" class="space-y-4">
-        <fieldset class="border p-4 rounded">
-          <legend class="font-bold px-2">Community Content</legend>
-          <div>
-            <label for="username" class="block font-meidum"
-              >Log into Novus</label
-            >
-            <input
-              type="text"
-              id="username"
-              name="username"
-              required
-              class="w-full border rounded p-2" />
-          </div>
-          <div>
-            <label
-              for="novus-select"
-              class="block font-medium mt-3 text-gray-700"
-              >Select Domain</label
-            >
-            <!-- place for a Dropdown -->
-            <select
-              id="novus-select"
-              name="novus"
-              class="w-full border rounded p-2 bg-white text-gray-900 focus:ring-blue-500">
-              <option value="computing">Advanced Computing</option>
-              <option value="news">World News</option>
-              <option value="Arts">Arts</option>
-              <option value="science">Science</option>
-            </select>
-          </div>
-        </fieldset>
+      <form id="discovery-from">
+        <label for="username">Username</label>
+       <input id="username" name="username" type="text" required />
+       
+    <label for="novus-select">Primary Domain</label>
+    <select id="novus-select" name="domain">
+      <option value="computing">Advanced Computing</option>
+      <option value="news">World News</option>
+      <option value="arts">Artistry</option>
+      <option value="science">Science</option>
+     <option value="law">Global Jurisprudence</option>
+    </select>
         <!-- place for radio buttons -->
         <div class="flex gap-4">
           <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
@@ -126,33 +117,44 @@
             </label>
           </div>
         </div>
+        <!-- place login buttons -->
         <button
           type="button"
           data-twe-ripple-init
           data-twe-ripple-color="light"
-          class="inline-block rounded bg-blue-600 px-6 py-2.5 text-white">
+          class="inline-block rounded bg-blue-600 px-6 py-2.5 text-white"
+          id="loginBtn"
+          value="loginBtn">
           Log In
         </button>
         <button
-          type="submit"
-          class="bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-          Forgot password?
+          type="button"
+          data-twe-ripple-init
+          data-twe-ripple-color="light"
+          class="inline-block rounded bg-white-600 px-6 py-2.5 text-black"
+          id="createBtn"
+          value="createBtn">
+          Create Account
         </button>
         <button
-          type="submit"
-          class="bg-white inline-block rounded-full bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-blue-400 text-emerald-600 shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-          Create new account
+          type="button"
+          data-twe-ripple-init
+          data-twe-ripple-color="light"
+          class="inline-block rounded bg-blue-600 px-6 py-2.5 text-white"
+          id="forgotBtn"
+          value="forgotBtn">
+          Forgot Password?
         </button>
       </form>
     </main>
-    <output id="feedback" class="block mt-4 text-center font-bold"></output>
+    <div id="feedback" class="block mt-4 text-center font-bold"></divt>
 
     <footer class="big-white p-6 text-center border-t">
       <div
         class="flex flex-row justify-around gap-6 mt-3 text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
         NOVUS
       </div>
-      <p>@ 2026 Pearla Mutombo | Authentic Social Tech | Novus</p>
+      <p>@ Novus 2026</p>
     </footer>
   </body>
 </html>

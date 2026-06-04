@@ -1,3 +1,27 @@
 html {
     background-color: #0f172a;
 }
+
+/* Mobile-first base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc;
+}
+
+main {
+    padding: 16px;
+    max-width: 100%;
+}
+
+/* Tablet and up */
+main {
+    padding: 32px;
+    max-width: 768px;
+    margin: auto;
+}
+/* Desktop and up */
+main {
+    max-width: 1024px;
+}
