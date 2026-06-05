@@ -68,7 +68,7 @@ document.addEventListener ("DOMContentLoaded", () => {
 
   // Conditional: redirect logged-out users away from private pages
   if (privatePages.includes(pageName) && !hasSession) {
-    alert("Access Denied: You need an account to see this. Please log in first.");
+    alert("Access Denied: You need an account to see this page. Please log in first.");
     window.location.href = "index.html"; 
     return;
   } 

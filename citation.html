@@ -32,12 +32,174 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
-    <title>Citation</title>
+    <title>NovusNet | Citation</title>
 </head>
-<body class="bg-slate-900 flex flex-col min-h-screen text-slate-100 font-sans antialiased">
-    <header></header>
+<body 
+    class="bg-slate-900 flex flex-col min-h-screen text-slate-100 font-sans antialiased">
+    <!-- SINGLE UNIFIED NAVBAR (Uniform with Orbit Wall) -->
+    <header
+      class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+      <nav
+        class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-6">
+          <a
+            class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
+            href="index.html">
+            NOVUS
+          </a>
+          <!-- Navigation Menu Links -->
+          <ul class="flex space-x-4 list-none m-0 p-0 text-sm font-medium">
+            <li>
+              <a href="feed.html" class="text-blue-400 font-semibold transition"
+                >Feed</a
+              >
+            </li>
+            <li>
+              <a
+                href="profile.html"
+                class="text-slate-400 hover:text-blue-400 transition"
+                >Profile</a
+              >
+            </li>
+            <li>
+              <a
+                href="orbit-stream-wall.html"
+                class="text-slate-400 hover:text-blue-400 transition"
+                >Orbit Wall</a
+              >
+            </li>
+             <li>
+              <a
+                href="citation.html"
+                class="text-slate-400 hover:text-blue-400 transition"
+                >Citation Page</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- User Session Indicator & Logout Button -->
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <span
+              class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <!-- Hidden by default, my script or central router can inject active user data here if needed -->
+            <span id="display-name" class="font-medium text-sm text-slate-300"
+              >Explorer</span
+            >
+          </div>
+          <button
+            id="logout-btn"
+            class="px-3 py-1.5 bg-red-500/20 hover:bg-red-500 border border-red-500/30 text-red-200 hover:text-white rounded-xl text-xs font-semibold transition duration-200">
+            Log out
+          </button>
+        </div>
+      </nav>
+    </header>
     <main>
-        <form></form>
+      <form>
+        <h1>Novus App API Citation</h1>
+        <section>
+          <h3>New York Times Top Stories API (Science, World, & Arts)</h3v>
+            <ol>
+            <li>Author: The New York Times</li>
+            <li>Title: Top Stories API (v2)</li>
+            <li>Links Used:
+              <!-- Add NYT Links -->
+                <li>
+                  <a 
+                  href="https://api.nytimes.com/svc/topstories/v2/science.json"
+                  class="text-slate-400 hover:text-blue-400 transition"
+                  >Science</a>
+                </li>
+
+                <li>
+                  <a 
+                  href="https://api.nytimes.com/svc/topstories/v2/world.json"
+                  class="text-slate-400 hover:text-blue-400 transition"
+                  >World News</a>
+                </li>
+                
+                <li>
+                  <a 
+                  href="https://api.nytimes.com/svc/topstories/v2/arts.json"
+                  class="text-slate-400 hover:text-blue-400 transition"
+                  >Arts</a>
+                </li>
+
+             </li>
+            <li>Citation (APA Style): The New York Times.
+              (2026, June 4). Top Stories API.
+              Retrieve from 
+              <a 
+              href="nytimes.com"
+              class="text-slate-400 hover:text-blue-400 transition"
+              >nytimes.com</a>
+            </li>
+            </ol>
+          </section>
+
+          <section>
+          <h3> NASA Astronomy Picture of the Day (APOD) API</h3>
+          <ul>
+          <li>Author: National Aeronautics and Sapce Administration (NASA)</li>
+          <li>Title: Planetary Astronomy picture of the Day API</li>
+          <li>Link Used: 
+            <a 
+            href="https://api.nasa.gov/planetary/apod"
+            class="text-slate-400 hover:text-blue-400 transition"
+            >NASA</a>
+          </li>
+          <li>Citation (NASA Recommended):The
+            data was obtained from National Aeronautics and Space Administration
+            (NASA) APOD API on 2026/06/04.
+          </li>
+          </ul>
+          </section>
+          <section>
+          <h3>Sv443's JokeAPI</h3>
+          <ol>
+          <li>Author: Sv443(GitHub:Sv433)</li>
+          <li>Title: JokeAPI v2</li>
+          <li>Link Used: 
+            <a 
+            href="https://v2.jokeapi.dev/joke/Programming>type=sinlge"
+             class="text-slate-400 hover:text-blue-400 transition"
+            >Programming Jokes of the Day</a>
+          </li>
+          <li>Citation (MLA Style): Sv443. JokeAPI.
+            Version 2,2026, 
+            <a 
+            href="https://sv443.net/jokeapi/v2/"
+             class="text-slate-400 hover:text-blue-400 transition"
+            >JokeAPI</a>
+          </li>
+        </ol>
+          </section>
+          <section>
+        <h3>Art Instittute of Chicago API</h3>
+        <ul>
+        <li>Author: Art Institute of Chicago</li>
+        <li>Title: AIC Public API v1</li>
+        <li>Link Used: 
+          <a 
+          href="https://api.artic.edu/api/v1/artwork/search"
+           class="text-slate-400 hover:text-blue-400 transition"
+          >Artwork</a>
+        </li>
+        <li>Citation (Chicago Style): Art Institute of Chicago. "AIC Public API." Accessed June 4,
+          2026. 
+          <a 
+          href="artic.edu"
+           class="text-slate-400 hover:text-blue-400 transition"
+          >artic.edu</a>
+        </li>
+        </ul>
+        </section>
+  
+
+      </form>
     </main>
     <footer class="big-white p-6 text-center border-t">
       <div
