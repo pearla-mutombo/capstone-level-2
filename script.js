@@ -56,7 +56,7 @@ if (!localStorage.getItem("novus_posts")) {
 
 document.addEventListener ("DOMContentLoaded", () => {
   const currentPath = window.location.pathname;
-  const pageName = currentPath.substring(currentPath.lastIndexOf("/") + 1) || "index-discover.html";
+  const pageName = currentPath.substring(currentPath.lastIndexOf("/") + 1) || "index.html";
 
   // Read the curent session from storage (rubric: Storage - get)
   const activeUser = JSON.parse(localStorage.getItem("novus_session"));
@@ -69,19 +69,19 @@ document.addEventListener ("DOMContentLoaded", () => {
   // Conditional: redirect logged-out users away from private pages
   if (privatePages.includes(pageName) && !hasSession) {
     alert("Access Denied: You need an account to see this. Please log in first.");
-    window.location.href = "index-discover.html"; 
+    window.location.href = "index.html"; 
     return;
   } 
   
   // Conditional: send logged-in users straight to the feed
-  if (pageName === "index-discover.html" && hasSession) {
+  if (pageName === "index.html" && hasSession) {
     window.location.href = "feed.html";
     return;
   } 
   
   //Call the right setup function for this page - routing logic checks
   switch (pageName) {
-    case "index-discover.html":
+    case "index.html":
       initPage1Portal();
       break;
     case "feed.html":
@@ -93,11 +93,25 @@ document.addEventListener ("DOMContentLoaded", () => {
     case "orbit-stream-wall.html":
       initPage4OrbitWall(activeUser);
       break;
+    case "citation.html":
+      initPage5Citation();
+  }
+
+  const navLogoutBtn = document.getElementById("logout-btn");
+  if (navLogoutBtn) {
+    navLogoutBtn.addEventListener("click", () =>{
+      if (confirm("Are you sure you want to log out and clear your session?"))
+      {localStorage.removeItem("novus_session");
+        window.location.href = "index.html";
+      }
+    });
+  
   }
 });
 
+
 //======================================================================
-// SECTION 1. Page 1: Portal (index-discover.html) 
+// SECTION 1. Page 1: Portal (index.html) 
 // (Note: This handles login, signup, and forgot password.
 // Each button has its own id in the HTML and its own click handler.)
 //=======================================================================
@@ -232,346 +246,9 @@ if (forgotBtn) {
   });
   }
 }
-
  
-//=====================================================================
-// SECTION 4 -  Page 2: Feed (feed.html)
-// Note: This page shows all public posts AND has a
-// form that fetches data from 6 different external APIs.
-// Everything is inside the initPage2Feed so it only runs on this page.
-//=====================================================================
- 
-function initPage2Feed() {
-  // Render public posts
-  const feedSection = document.getElementById("feed-section");
-
-  if(feedSection) {
-    const posts = JSON.parse(localStorage.getItem("novus_posts")) || [];
-    const publicPosts = posts.filter((p) => p.visibility === "public");
-
-    if(publicPosts.length === 0) {
-      feedSection.innerHTML = `<p class="text-center text-gray-500 py-12">No discovery Moments have materialized yet.</p>`;
-    } else {
-      // for loop traversing an array (rubric: Loops)
-      let html = "";
-      for (let index = 0; index < publicPosts.length; index++) {
-        const post = publicPosts[index];
-        html+= `
-        <article class="block rounded-xl bg-white p-6 shadow-md border border-gray-100 mb-6">
-            <header class="flex items-center justify-between mb-3 border-b pb-2">
-              <div>
-                <h5 class="text-lg font-bold text-neutral-800">${post.username}</h5>
-                <span class="inline-block rounded bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800 mt-1">${post.domain}</span>
-              </div>
-              <span class="text-xs text-gray-400 font-mono">${post.timestamp}</span>
-            </header>
-            <p class="mb-4 text-base text-neutral-600">${post.text}</p>
-            ${post.image ? `<figure><img src="${post.image}" class="w-full h-64 object-cover rounded-lg" alt="Media content" /></figure>` : ""}
-            <footer class="flex gap-4 text-xs text-blue-500 font-medium">
-              <button type="button" class="hover:underline">▲ Support Moment</button>
-              <button type="button" class="hover:underline">💬 Thread Analysis</button>
-            </footer>
-          </article>
-        `;
-      }
-      feedSection.innerHTML = html;
-    }
-  }
-
-  // API explorer form
-  const apiForm = document.getElementById("form-2");
-  if(!apiForm) return;
-
-  apiForm.onsubmit = handleApiSubmit;
-}
-
-// Handler for the API form (separate function so it stays clean)
-async function handleApiSubmit(event) {
-  event.preventDefault();
-
-  const form = event.target;
-  const errorEl = document.getElementById("error");
-  const successEl = document.getElementById("success");
-  const resultEL = document.getElementById("result");
-  
-  // Clear old feedback if the elements exist
-  errorEl.innerHTML = "";
-  successEl.innerHTML = "";
-  resultEL.innerHTML = "";
-
-  // Build a data FROM the form values (rubric: API - data object from form)
-  // Reads the logged-in user's doman preference too
-  const activeUser = JSON.parse(localStorage.getItem("novus_session")) || {};
-  const formData = {
-    topic: form.elements.topic.value.trim(),
-    domain: activeUser.domainPreference || "computing"
-  };
-  
-  // Try/catch handles API errors (rubric: Conditionals - try/catch)
-  try {
-    // Fire all 6 fetches in parallel
-    // Normally, javaScript fetches information from the internet one item at a time. 
-    // Using Promise.all, it simultaneously calls all six web services at the exact same moment.
-    // They return in parallel, cutting down the user's wait time significantly.
-    const [response1, response2, response3, response4, response5, response6] = await Promise.all([
-      fetch("https://api.nytimes.com/svc/topstories/v2/science.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Science News
-      fetch("https://api.nytimes.com/svc/topstories/v2/world.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // World News
-      fetch("https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=haMreju8Eo1myVG3fJGhXpyGksuO6NATTC6YHGBhzTGWhedS"), // Arts News
-      fetch("https://api.nasa.gov/planetary/apod?api_key=uqt1ryc8YuEJtkkrTpIJoJQP5SsyJz6EZjGTXuFS"), // NASA picture of the Day
-      fetch("https://v2.jokeapi.dev/joke/Programming?type=single"), // Programming Joke
-      fetch("https://api.artic.edu/api/v1/artworks/search") // Artwork 
-    ]);
-
-    // Parse all 6 responses as JSON in parallel
-    const [scienceData, worldData, artsData, nasaData, jokeData, artwrokData] = await Promise.all([
-      response1.json(),
-      response2.json(),
-      response3.json(),
-      response4.json(),
-      response5.json(),
-      response6.json()
-    ]);
-
-    // Pick random items from each list-style API.
-    // Math.floor rounds DOWN to a whole number so we get a valid array index.
-    // Because the news channels, and art hubs return long lists of content,
-    //  in this script I use a math filter (Math.random()) to grab a random index integer from
-    // the arrays, ensuring that every time your page is loaded or submitted, a completely
-    // dynamic set of titles updates on screen.
-    const scienceResults = scienceData.results;
-    const randomScience = scienceResults.length > 0 ? scienceResults[Math.floor(Math.random() * scienceResults.length)]: null;
-
-    const worldResults = worldData.results;
-    const randomWorld= worldResults.length > 0 ? worldResults[Math.floor(Math.random() * worldResults.length)]: null;
-
-    const artsResults = artsData.results;
-    const randomArts= artsResults.length > 0 ? artsResults[Math.floor(Math.random() * artsResults.length)]: null;
-
-    // NASA APOD returns a single object, not a list a picture of the day
-    const nasaPicture = nasaData || {};
-    
-    //JokeAPI single returns one joke at a time
-    const joke = jokeData || {};
-
-    // Art Institute returns .data
-    const artworks = artwrokData.dat || [];
-    const randomArt = artworks.length > 0 ? artworks[Math.floor(Math.random() * artworks.length)]: null;
-
-    // Display feedback based on the data (rubric: API - display feedback)
-    if(successEl) {
-      const topicText = (form.elements.topic && form.elements.topic.value.trim()) || "General Matrix";
-    successEl.className = "text-emerald-500 font-bold mb-4 text-xs tracking-wide uppercase";
-    successEl.innerHTML = `✅ Loaded 6 discovery moments for topic: <em>${topicText}</em>`;
-    }
-// Here the browser checks the localStorage storage for any user posts. if it finds some, a for loop
-// starts at zero, visits every single item on the list, packahes it clearly inside this neat HTML template tags,
-// and sticks it onto the page.
-   if (resultEl) {
-      resultEl.innerHTML = `
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-blue-400">🔬 NYT Science Hub</h3>
-            <p class="text-xs text-slate-300 mt-1">${randomScience ? randomScience.title : "No data received."}</p>
-          </article>
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-green-400">🌍 NYT World News</h3>
-            <p class="text-xs text-slate-300 mt-1">${randomWorld ? randomWorld.title : "No data received."}</p>
-          </article>
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-purple-400">🎨 NYT Arts Division</h3>
-            <p class="text-xs text-slate-300 mt-1">${randomArts ? randomArts.title : "No data received."}</p>
-          </article>
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-indigo-400">🚀 NASA Image Capture</h3>
-            <p class="text-xs text-slate-300 mt-1">${nasaPicture.title || "No data received."}</p>
-            ${nasaPicture.url ? `<figure class="mt-2"><img src="${nasaPicture.url}" class="max-h-40 w-full object-cover rounded-xl" alt="NASA Media" /></figure>` : ""}
-          </article>
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-yellow-400">💻 Debugging Humor</h3>
-            <p class="text-xs text-slate-300 mt-1">${joke.joke || (joke.setup ? joke.setup + " — " + joke.delivery : "No data received.")}</p>
-          </article>
-          <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
-            <h3 class="font-bold text-sm text-pink-400">🖼️ Art Institute Repository</h3>
-            <p class="text-xs text-slate-300 mt-1">${randomArt ? randomArt.title : "No data received."}</p>
-            ${randomArt && randomArt.thumbnail && randomArt.thumbnail.lqip ? `<figure class="mt-2"><img src="${randomArt.thumbnail.lqip}" class="max-h-40 w-full object-cover rounded-xl" alt="Artwork" /></figure>` : ""}
-          </article>
-      </section>
-      `;
-  }
-
-     } catch (error) {
-    console.error("Error processing API data:", error);
-     if(errorEl) {
-      errorEl.className = "text-red-600 font-bold text-xs uppercase tracking-wider";
-    errorEl.innerHTML = "❌Failed to load API facts. Check your connection or API Keys.";
-    }
-    
-  }
-
-}
-//=====================================================================
-// SECTION 5 -  Page 3: Profle (profile.html)
-// Note: Shows the user's idenity card. Pulls the 
-// session from storage and writes name/role/bio into the page
-// using dot nation (activeUser.username, .role, .bio).
-//=====================================================================
-
-// when this function starts, it accepts the activeUser badge. if that badge is missing or broken,
-//  the code automatically creates a generic "Guest Explorer"
-// placeholder badge so the webpage doesn't freeze or crash.
-function initPage3Profile(activeUser) {
-  const nameEl = document.getElementById("display-name");
-  const roleEl = document.getElementById("display-role");
-  const bioEl = document.getElementById("display-bio");
-
-// Created a backup safety net for Guest if there's no logged-in user data
-  const userSession = activeUser || {
-    username: "Guest Explorer",
-    role: "Unverified",
-    bio: "No active session found."
-  };
-
-  // Instead of throwing an error if an HTML item is missing, the code
-  // checks each box using (if) (nameEl) statement. if it finds the name block
-  // on the HTML page, it writes the name text using dot notation (userSession.username).
-  // if it doesn't find it. it quietlt moves to the next item.
-
-  // Only update the profile text boxes if they actually exist on this HTML page
-  if (nameEl) {
-    // Dot-notation updates to DOM elements (rubric: Objects - dot notation)
-    nameEl.innerText = userSession.username;
-  }
-
-  if (roleEl) {
-    roleEl.innerText = userSession.role;
-  }
-
-  if (bioEl) {
-    bioEl.innerText = userSession.bio;
-  }
-
-  // Logout handler - attached to the global window so HTML onclick can call it
-  const logoutBtn = document.getElementById("logout-btn");
-
-   if (logoutBtn) {
-    // Listen for the user clicking the button directly 
-    logoutBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to clear your session and disconnect?")) {
-      localStorage.removeItem("novus_session");
-      window.location.href = "index-discover.html";
-    }
-  });
-}
-
-}
-//======================================================================
-//  SECTION 6  - Page 4: Orbit Wall (orbit-stream-wall.html)
-// Not: This is the user's personal dashboard.
-// They can publish a post  (text + optional image URL) and see
-// every post (public and private) sorted newest-first.
-//=======================================================================
-
-function initPage4OrbitWall (activeUser) {
-
-  // create a fallback safety net if no user session is active so tha page 
-  // doesn't crash or create an error
-  const currentUser = activeUser || {
-    username: "Annoymous User",
-    role: "Guest Explorer",
-    domainPreference: "computing"
-  }
-  // Show username everywhere it's reference in the layout
-  const displayNames = document.querySelectorAll("#display-name, #profile-name");
-  displayNames.forEach((el) => {
-    // Dot -notation updates to DOM elements (rubric: objects - dot notation)
-    el.textContent = activeUser.username;
-  });
-
-  const roleEl = document.getElementById("display-role");
-  if (roleEl) roleEl.textContent = activeUser.role;
-
-  const feedContainer = document.getElementById("canvas-feed");
-  const textInput = document.getElementById("post-input");
-  const imageInput = document.getElementById("post-image-input");
-
-  // Look up the user's pretty domain name from the map
-  const activeDomainKey = activeUser.domainPreference || "computing";
-  const userDomainTitle = domain_Map[activeDomainKey] || "Advanced Computing";
 
 
-  const subLabel = document.getElementById("domain-label");
-  if (subLabel) subLabel.textContent = userDomainTitle;
-
-  // Reusable function to redraw the feed (rubric: Functions)
-  const renderOrbitPosts = () => {
-    if(!feedContainer) return;
-    const posts = JSON.parse(localStorage.getItem("novus_posts")) || [];
-
-    let html = "";
-    // for loop traversing an array (rubric: Loops)
-  for (let i = 0; i < posts.length; i++) {
-    const post = posts[i];
-    html += `
-        <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 space-y-3 mb-4">
-          <header class="flex justify-between items-center text-xs">
-            <span class="font-bold text-blue-400">${post.domain || "General"}</span>
-            <div class="flex items-center gap-2 text-slate-500">
-              <span class="italic text-[10px]">[by ${post.username || "Annymous"}]</span>
-              <span>${post.timestamp || "Just now"}</span>
-              <span>${post.visibility || "public"}</span>
-            </div>
-          </header>
-          <p class="text-slate-200">${post.text}</p>
-          ${post.image ? `<figure><img src="${post.image}" class="max-h-60 w-full object-cover rounded-xl" alt="Stream attachment" /></figure>` : ""}
-          <footer class="flex gap-4 text-xs text-blue-400">
-            <button type="button" class="hover:underline">▲ Upvote</button>
-            <button type="button" class="hover:underline">💬 Discuss</button>
-          </footer>
-        </article>
-      `;
-    }
-    feedContainer.innerHTML = html;
-  
-  };
-
-// Publish button - saves a new post to storage and re-renders
-  const publishBtn = document.getElementById("publishBtn");
-  if (publishBtn) {
-    publishBtn.addEventListener("click", () => {
-      // input to make sure the boxes exist before grabbing text values
-      const content = textInput.value.trim();
-      const imageURL = imageInput.value.trim();
-
-      if(!content) {
-        alert("Write something before publishing your post.");
-        return;
-      }
-
-      // Build the new post object (rubric: object - new object with properties)
-      const newPost = {
-        username: activeUser.username,
-        domain: userDomainTitle,
-        text: content,
-        image: imageInput.value.trim(),
-        timestamp: "Just now",
-        visibility: "public"
-      };
-
-      const runtimePosts = JSON.parse(localStorage.getItem("novus_posts")) || [];
-      runtimePosts.unshift(newPost); // newest first item placement
-      localStorage.setItem("novus_posts", JSON.stringify(runtimePosts));
-
-      // Reset form fields
-     if(textInput) textInput.value = "";
-     if(imageInput) imageInput.value = "";
-// Instanly redraw the wall with the new item included
-      renderOrbitPosts();
-    });
-  }
-  // Initial draw = ACTUALLY call the function this time
-  renderOrbitPosts();
-
-} 
 
 //=============================================================
 // THE END.
