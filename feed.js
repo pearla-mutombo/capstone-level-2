@@ -175,7 +175,7 @@ async function handleApiSubmit(event) {
   if (resultEl) resultEl.innerHTML = "";
 
   // Build a data FROM the form values (rubric: API - data object from form)
-  // Reads the logged-in user's doman preference too
+  // Reads the logged-in user's doman preference to
   const activeUser = JSON.parse(localStorage.getItem("novus_session")) || {};
   let topic = "";
   if (form.elements.topic) {
@@ -314,7 +314,7 @@ async function handleApiSubmit(event) {
       `;
     }
   } catch (error) {
-    console.error(error);
+  
     // console.error("Error processing API data:", error);
     if (errorEl) {
       errorEl.className =

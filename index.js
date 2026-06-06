@@ -226,7 +226,7 @@ function initPage1Portal() {
       showOkay("Idenity Verified! Entering Orbit Stream...");
       setTimeout(() => {
         window.location.href = "feed.html";
-      }, 1200); // wait 1.2 seconds then go to the feed page
+      }, 1200); // wait 1.2 seconds then go to the feed.html page
     });
   }
 
@@ -265,6 +265,8 @@ function initPage1Portal() {
   }
 
   // Action C: Forgot Password
+  // find the forgot button
+  
   const forgotBtn = document.getElementById("forgotBtn");
   if (forgotBtn) {
     forgotBtn.addEventListener("click", () => {

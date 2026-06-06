@@ -149,7 +149,7 @@ function initPage4OrbitWall(activeUser) {
 
   // Look up the user's pretty domain name from the map
   const activeDomainKey = activeUser.domainPreference || "computing";
-  const userDomainTitle = domain_Map[activeDomainKey] || "Advanced Computing";
+  const userDomainTitle = domainMap[activeDomainKey] || "Advanced Computing";
 
   const subLabel = document.getElementById("domain-label");
   if (subLabel) subLabel.textContent = userDomainTitle;
@@ -211,7 +211,7 @@ function initPage4OrbitWall(activeUser) {
 
       const runtimePosts =
         JSON.parse(localStorage.getItem("novus_posts")) || [];
-      runtimePosts.unshift(newPost); // newest first item placement
+      runtimePosts.unshift(newPost); //  post newest first item placement
       localStorage.setItem("novus_posts", JSON.stringify(runtimePosts));
 
       // Reset form fields
