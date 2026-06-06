@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //====================================================================
 
 //  Custom object with key/value pairs (rubric: Objects)
-const domain_Map = {
+const domainMap = {
   computing: "Advanced Computing",
   news: "World News",
   Arts: "Artistry",
@@ -162,7 +162,7 @@ async function handleApiSubmit(event) {
   event.preventDefault();
 
   const form = event.target;
-  console.log("FROM:", form);
+  console.log("FORM:", form);
   console.log("TOPIC:", form.elements.topic);
 
   const errorEl = document.getElementById("error");
@@ -170,15 +170,19 @@ async function handleApiSubmit(event) {
   const resultEl = document.getElementById("result");
 
   // Clear old feedback if the elements exist
-  if(errorEl) errorEl.innerHTML = "";
-  if(successEl) successEl.innerHTML = "";
-  if(resultEl) resultEl.innerHTML = "";
+  if (errorEl) errorEl.innerHTML = "";
+  if (successEl) successEl.innerHTML = "";
+  if (resultEl) resultEl.innerHTML = "";
 
   // Build a data FROM the form values (rubric: API - data object from form)
   // Reads the logged-in user's doman preference too
   const activeUser = JSON.parse(localStorage.getItem("novus_session")) || {};
+  let topic = "";
+  if (form.elements.topic) {
+    topic = form.elements.topic.value.trim();
+  }
   const formData = {
-    topic: form.elements.topic?.value?.trim() || "",
+    topic: topic,
     domain: activeUser.domainPreference || "computing",
   };
 
@@ -205,13 +209,12 @@ async function handleApiSubmit(event) {
         fetch("https://v2.jokeapi.dev/joke/Programming?type=single"), // Programming Joke
         fetch("https://api.artic.edu/api/v1/artworks/search"), // Artwork
       ]);
-console.log(scienceData);
-console.log(worldData);
-console.log(artsData);
-console.log(nasaData);
-console.log(jokeData);
-console.log(artworkData);
-
+    // console.log(scienceData);
+    // console.log(worldData);
+    // console.log(artsData);
+    // console.log(nasaData);
+    // console.log(jokeData);
+    // console.log(artworkData);
 
     // Parse all 6 responses as JSON in parallel
     const [scienceData, worldData, artsData, nasaData, jokeData, artworkData] =
@@ -230,18 +233,22 @@ console.log(artworkData);
     //  in this script I use a math filter (Math.random()) to grab a random index integer from
     // the arrays, ensuring that every time your page is loaded or submitted, a completely
     // dynamic set of titles updates on screen.
-    const scienceResults = scienceData.results;
-    const randomScience = scienceResults.length > 0
-        ? scienceResults[Math.floor(Math.random() * scienceResults.length)]
-        : null;
+    const scienceResults = scienceData.results || [];
+    let randomScience = null;
+    if (scienceResults.length > 0) {
+      const randomIndex = Math.floor(Math.random() * scienceResults.length);
 
-    const worldResults = worldData.results;
-    const randomWorld = worldResults.length > 0
+      randomScience = scienceResults[randomIndex];
+    }
+    const worldResults = worldData.results || [];
+    const randomWorld =
+      worldResults.length > 0
         ? worldResults[Math.floor(Math.random() * worldResults.length)]
         : null;
 
-    const artsResults = artsData.results;
-    const randomArts = artsResults.length > 0
+    const artsResults = artsData.results || [];
+    const randomArts =
+      artsResults.length > 0
         ? artsResults[Math.floor(Math.random() * artsResults.length)]
         : null;
 
@@ -253,7 +260,8 @@ console.log(artworkData);
 
     // Art Institute returns .data
     const artworks = artworkData.data || [];
-    const randomArt = artworks.length > 0
+    const randomArt =
+      artworks.length > 0
         ? artworks[Math.floor(Math.random() * artworks.length)]
         : null;
 
@@ -264,13 +272,12 @@ console.log(artworkData);
         "General Matrix";
       successEl.className =
         "text-emerald-500 font-bold mb-4 text-xs tracking-wide uppercase";
-      successEl.innerHTML = `✅ Loaded 6 discovery moments for topic: <em>${topicText}</em>`;
+      successEl.innerHTML = `✅ Results loaded for topic: ${formData.topic}`;
     }
     // Here the browser checks the localStorage storage for any user posts. if it finds some, a for loop
-    // starts at zero, visits every single item on the list, packahes it clearly inside this neat HTML template tags,
+    // starts at zero, visits every single item on the list, packages it clearly inside this neat HTML template tags,
     // and sticks it onto the page.
     if (resultEl) {
-
       resultEl.innerHTML = `
       <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
@@ -297,9 +304,10 @@ console.log(artworkData);
           <article class="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
             <h3 class="font-bold text-sm text-pink-400">🖼️ Art Institute Repository</h3>
             <p class="text-xs text-slate-300 mt-1">${randomArt ? randomArt.title : "No data received."}</p>
-            ${randomArt.thumbnail?.lqip
-              ? `<img src="${randomArt.thumbnail.lqip}" class="max-h-40 w-full object-cover rounded-xl">`
-             : ""
+            ${
+              randomArt.thumbnail?.lqip
+                ? `<img src="${randomArt.thumbnail.lqip}" class="max-h-40 w-full object-cover rounded-xl">`
+                : ""
             }
           </article>
       </section>
@@ -325,8 +333,4 @@ console.log(artworkData);
       }
     });
   }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initPage2Feed();
-  });
 }

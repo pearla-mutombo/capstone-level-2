@@ -30,7 +30,7 @@
     <script
       src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"
       defer></script>
-    <script src="feed-script.js" defer></script>
+    <script src="feed.js" defer></script>
     <title>NovusNet | Community Feed</title>
   </head>
   <body
@@ -76,9 +76,10 @@
           <div class="flex items-center gap-2">
             <span
               class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <!-- Hidden by default, my script or central router can inject active user data here if needed -->
-            <span id="display-name" class="font-medium text-sm text-slate-300"
-              >Explorer</span
+            <!-- Hidden by default, my script or central router can inject an active username data here if needed -->
+            <span 
+            id="display-name-nav" 
+            class="font-medium text-sm text-slate-300"></span
             >
           </div>
           <button
@@ -118,7 +119,7 @@
               name="topic"
               type="text"
               class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500"
-              placeholder="Search the database... (e.g. space, AI, art)" 
+              placeholder="Enter Topic... (e.g. space, AI, art)" 
               />
           </div>
           <button type="submit" class="bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-slate-950 font-bold px-5 py-3 rounded-xl text-sm transition duration-200 whitespace-nowrap">
