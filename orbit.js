@@ -217,7 +217,7 @@ function initPage4OrbitWall(activeUser) {
       // Reset form fields
       if (textInput) textInput.value = "";
       if (imageInput) imageInput.value = "";
-      // Instanly redraw the wall with the new item included
+      // Instanly redraw the call with the new item included
       renderOrbitPosts();
     });
   }

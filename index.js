@@ -207,14 +207,14 @@ function initPage1Portal() {
       const targetSession = {
         // creating a logged-in user
         username: username,
-        role: "Founding Member", //
+        role: "Member", //
         bio: `Novus network anchor point connection assigned to ${username}. Dedicated explorer across tactical domains.`,
         domainPreference: domain,
         lastLogin: new Date().toLocaleString(),
       };
 
       // Change property's value (rubric: Objects - change a property)
-      targetSession.role = "Founding Memeber. Verified."; //changes the value
+      targetSession.role = "Memeber. Verified."; //changes the value
 
       // Save to storage (rubric: Storage  - save)
       localStorage.setItem(
